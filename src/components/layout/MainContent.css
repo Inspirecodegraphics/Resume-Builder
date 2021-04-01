@@ -1,0 +1,13 @@
+.rb-main {
+	background-color: #313b47;
+}
+
+.box {
+	height: 350px;
+	border-radius: 5px;
+	box-shadow: 1px 1px 5px #1b2129;
+	margin: 1em;
+}
+.beta-content {
+	background-color: #425061;
+}

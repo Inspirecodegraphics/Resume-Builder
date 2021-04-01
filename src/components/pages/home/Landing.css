@@ -1,0 +1,25 @@
+.landing-img-outer {
+	margin: auto;
+	position: relative;
+	display: flex;
+}
+.landing {
+	color: #fff;
+	background: linear-gradient(to right, #303d46, #1dbfaf);
+}
+
+.landing-img-outer img {
+	width: 40%;
+}
+.landing-img-outer .r1 {
+	width: 10%;
+	position: absolute;
+	bottom: 5%;
+}
+.landing-img-outer .r2 {
+	position: absolute;
+	z-index: -1;
+	right: -11.25vw;
+	top: 7.931vw;
+	width: 10.7492vw;
+}
