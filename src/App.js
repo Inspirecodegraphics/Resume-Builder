@@ -10,7 +10,7 @@ import MainContent from "./components/layout/MainContent";
 import Footer from "./components/layout/Footer";
 const drawerWidth = 240;
 function App() {
-	const [open, setOpen] = useState(true);
+	const [open, setOpen] = useState(false);
 
 	const handleDrawerToggle = () => {
 		setOpen(!open);

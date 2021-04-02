@@ -3,9 +3,31 @@
 	font-family: "Roboto", sans-serif;
 	color: white;
 }
-
+.rb-editor-container {
+	width: 210mm;
+}
 .rb-editor-page {
 	width: 210mm;
 	height: 297mm;
 	background-color: white;
+}
+.rb-editor-setting {
+	position: fixed;
+	top: 50px;
+	width: 400px;
+	z-index: 1100;
+	background-color: #425061;
+	border-radius: 50px;
+}
+.rb-editor-setting .col-3 {
+	cursor: pointer;
+}
+
+.rb-editor-setting svg {
+	width: 1.5rem;
+}
+.rb-divider {
+	background-color: #313b47 !important;
+	height: 2px !important;
+	opacity: 1;
 }
