@@ -31,3 +31,6 @@
 	height: 2px !important;
 	opacity: 1;
 }
+.list-group-item {
+	border: none;
+}
