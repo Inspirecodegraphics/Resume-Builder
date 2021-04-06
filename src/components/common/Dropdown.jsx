@@ -30,11 +30,12 @@ const useStyles = makeStyles((theme) => ({
 	},
 }));
 
-const Dropdown = ({ item }) => {
+const Dropdown = ({ setLoginModalOpen, item }) => {
 	const [anchorEl, setAnchorEl] = React.useState(null);
 	const open = Boolean(anchorEl);
 	const handleMenu = (event) => {
 		setAnchorEl(event.currentTarget);
+		setLoginModalOpen(true);
 	};
 
 	const handleClose = () => {

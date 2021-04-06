@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useContext } from "react";
 import clsx from "clsx";
 import { Link } from "react-router-dom";
 
@@ -10,18 +10,18 @@ import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import InputBase from "@material-ui/core/InputBase";
 import Button from "@material-ui/core/Button";
-import Popover from "@material-ui/core/Popover";
-import MenuItem from "@material-ui/core/MenuItem";
+
 import Divider from "@material-ui/core/Divider";
 // MIUI Icons
 import MenuIcon from "@material-ui/icons/Menu";
 import AccountCircle from "@material-ui/icons/AccountCircle";
 import SearchIcon from "@material-ui/icons/Search";
 import NotificationsNoneIcon from "@material-ui/icons/NotificationsNone";
-import ChatIcon from "@material-ui/icons/Chat";
-import ArrowDropDownIcon from "@material-ui/icons/ArrowDropDown";
-import DragIndicatorIcon from "@material-ui/icons/DragIndicator";
+
 import Dropdown from "../common/Dropdown";
+import { signInWithGoogle } from "../../services/utils/auth";
+import { UserContext } from "./../../Providers/userProvider";
+import LoginModal from "./../LoginModal";
 
 const Navbar = ({ open, handleDrawerToggle, drawerWidth }) => {
 	const useStyles = makeStyles((theme) => ({
@@ -109,6 +109,9 @@ const Navbar = ({ open, handleDrawerToggle, drawerWidth }) => {
 			textTransform: "capitalize",
 		},
 	}));
+	const [loginModalOpen, setLoginModalOpen] = React.useState(true);
+
+	const currentUser = useContext(UserContext);
 	const classes = useStyles();
 	const user = {
 		type: "User",
@@ -117,7 +120,7 @@ const Navbar = ({ open, handleDrawerToggle, drawerWidth }) => {
 		icon: <AccountCircle />,
 		menuItem: [
 			{
-				label: "Profile",
+				label: `${currentUser ? currentUser.displayName : "asd"}`,
 				link: "/profile",
 			},
 			{
@@ -148,6 +151,11 @@ const Navbar = ({ open, handleDrawerToggle, drawerWidth }) => {
 			},
 		],
 	};
+
+	// const signInWithGoogle = () => {
+	//   const provider = new firebase.auth.GoogleAuthProvider();
+	//   auth.signInWithPopup(provider);
+	// }
 	const preventDefault = (event) => event.preventDefault();
 	return (
 		<AppBar
@@ -216,8 +224,12 @@ const Navbar = ({ open, handleDrawerToggle, drawerWidth }) => {
 
 				<Divider orientation="vertical" flexItem />
 
-				<Dropdown item={user}></Dropdown>
+				<Dropdown setLoginModalOpen={setLoginModalOpen} item={user}></Dropdown>
 			</Toolbar>
+			<LoginModal
+				loginModalOpen={loginModalOpen}
+				setLoginModalOpen={setLoginModalOpen}
+			></LoginModal>
 		</AppBar>
 	);
 };

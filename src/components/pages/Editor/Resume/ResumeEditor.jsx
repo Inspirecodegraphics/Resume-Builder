@@ -15,7 +15,7 @@ const ResumeEditor = (props) => {
 	const id = props.match.params.id;
 	const [selectedFont, setSelectedFont] = useState("Roboto");
 	const [user, setUser] = useState(null);
-	const fonts = ["Merriweather", "Raleway", "Ubuntu", "Roboto"];
+	const fonts = ["Merriweather", "Raleway", "Ubuntu", "Roboto", "Kiwi Maru"];
 
 	useEffect(() => {
 		const user = getUser();

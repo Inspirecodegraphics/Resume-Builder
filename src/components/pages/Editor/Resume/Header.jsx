@@ -4,7 +4,7 @@ import { makeStyles } from "@material-ui/core/styles";
 import AccountDailog from "./AccountSettingDialog";
 
 const Header = ({ user }) => {
-	const [modalOpen, setModalOpen] = useState(true);
+	const [modalOpen, setModalOpen] = useState(false);
 
 	const handleModalOpen = () => {
 		setModalOpen(true);
@@ -51,15 +51,15 @@ const Header = ({ user }) => {
 					<div className="social px-3">
 						<div className="row">
 							{Object.keys(user.mainContact).map((contact) => (
-								<div className="col-6">
+								<div key={contact} className="col-6">
 									<div className="row">
 										<div className="col-1">
-											<li class="list-group-item py-1">
-												<i class={user.mainContact[contact].icon}></i>
+											<li className="list-group-item py-1">
+												<i className={user.mainContact[contact].icon}></i>
 											</li>
 										</div>
 										<div className="col-11">
-											<li class="list-group-item py-1">
+											<li className="list-group-item py-1">
 												{contact !== "address" && (
 													<a
 														target="_blank"
@@ -87,15 +87,15 @@ const Header = ({ user }) => {
 							{Object.keys(user.socialInfo).map((social) => {
 								return (
 									user.socialInfo[social].link && (
-										<div className="col-6">
+										<div key={social} className="col-6">
 											<div className="row">
 												<div className="col-1">
-													<li class="list-group-item py-1">
-														<i class={user.socialInfo[social].icon}></i>
+													<li className="list-group-item py-1">
+														<i className={user.socialInfo[social].icon}></i>
 													</li>
 												</div>
 												<div className="col-11">
-													<li class="list-group-item py-1">
+													<li className="list-group-item py-1">
 														<a
 															target="_blank"
 															rel="noreferrer"
