@@ -3,15 +3,11 @@ import Joi from "joi-browser";
 
 import TextField from "@material-ui/core/TextField";
 import IconButton from "@material-ui/core/IconButton";
-import Input from "@material-ui/core/Input";
-import InputLabel from "@material-ui/core/InputLabel";
 import InputAdornment from "@material-ui/core/InputAdornment";
-import FormHelperText from "@material-ui/core/FormHelperText";
 import FormControl from "@material-ui/core/FormControl";
 import Visibility from "@material-ui/icons/Visibility";
 import VisibilityOff from "@material-ui/icons/VisibilityOff";
 import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
 import FormGroup from "@material-ui/core/FormGroup";
 import Link from "@material-ui/core/Link";
 import Modal from "@material-ui/core/Modal";
@@ -19,7 +15,6 @@ import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
 import Button from "@material-ui/core/Button";
 import Tooltip from "@material-ui/core/Tooltip";
-import MessageIcon from "@material-ui/icons/Message";
 
 import "./LoginModal.css";
 import {
@@ -97,6 +92,7 @@ const LoginModal = ({ setLoginModalOpen, loginModalOpen }) => {
 
 	const handleChange = (prop) => ({ currentTarget: input }) => {
 		const error = { ...errors };
+		setCustomErrors({});
 		const errorMsg = validateProperty(input);
 		if (errorMsg) error[input.name] = errorMsg;
 		else delete error[input.name];
@@ -125,11 +121,7 @@ const LoginModal = ({ setLoginModalOpen, loginModalOpen }) => {
 
 	const handleTypeChange = () => {
 		const currentType = type;
-		setValues({
-			email: "",
-			password: "",
-			name: "",
-		});
+		resetForm();
 		setErrors({});
 		setCustomErrors({});
 		setType(currentType === "Sign In" ? "Sign Up" : "Sign In");
@@ -141,12 +133,18 @@ const LoginModal = ({ setLoginModalOpen, loginModalOpen }) => {
 	const doSubmit = async () => {
 		if (type === "Sign In") {
 			signInWithEmailPassword(values.email, values.password)
-				.then((data) => console.log(data))
+				.then((data) => {
+					console.log(data);
+					resetForm();
+				})
 				.catch((err) => customError(err));
 		}
 		if (type === "Sign Up") {
 			signUpWithEmailPassword(values.email, values.password)
-				.then((data) => console.log(data))
+				.then((data) => {
+					console.log(data);
+					resetForm();
+				})
 				.catch((err) => customError(err));
 		}
 		if (type === "Reset") {
@@ -159,11 +157,6 @@ const LoginModal = ({ setLoginModalOpen, loginModalOpen }) => {
 				)
 				.catch((err) => customError(err));
 		}
-		setValues({
-			email: "",
-			password: "",
-			name: "",
-		});
 	};
 	const customError = (err) => {
 		console.log(err.code);
@@ -188,6 +181,13 @@ const LoginModal = ({ setLoginModalOpen, loginModalOpen }) => {
 		} else {
 			setCustomErrors({ err: err.message });
 		}
+	};
+	const resetForm = () => {
+		setValues({
+			email: "",
+			password: "",
+			name: "",
+		});
 	};
 	return (
 		<Modal
@@ -275,7 +275,7 @@ const LoginModal = ({ setLoginModalOpen, loginModalOpen }) => {
 									<FormControl className="w-100 mt-0 pt-0 ">
 										<TextField
 											error={errors.name}
-											className=""
+											className="mb-1"
 											id="signUp-name"
 											label="Name"
 											type="text"
@@ -356,7 +356,7 @@ const LoginModal = ({ setLoginModalOpen, loginModalOpen }) => {
 								{type !== "Reset" && (
 									<p
 										onClick={handleResetPassword}
-										className="py-2 m-0 d-inline-block"
+										className="pt-2 pb-0 m-0 d-inline-block"
 										style={{ cursor: "pointer", color: "blue" }}
 									>
 										Reset Password
@@ -403,5 +403,3 @@ const LoginModal = ({ setLoginModalOpen, loginModalOpen }) => {
 };
 
 export default LoginModal;
-
-//  An e-mail with instructions to create a new password has been sent to you.

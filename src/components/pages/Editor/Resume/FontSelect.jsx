@@ -1,13 +1,13 @@
 import React from "react";
 // MIUI Core
-import Popover from "@material-ui/core/Popover";
 import MenuItem from "@material-ui/core/MenuItem";
 import Tooltip from "@material-ui/core/Tooltip";
-import { ReactComponent as Font } from "../../../../static/icon/font.svg";
 import Popper from "@material-ui/core/Popper";
 import Fade from "@material-ui/core/Fade";
 import Paper from "@material-ui/core/Paper";
 import ClickAwayListener from "@material-ui/core/ClickAwayListener";
+// SVG Icons
+import { ReactComponent as Font } from "../../../../static/icon/font.svg";
 
 const FontSelect = ({ item, setSelectedFont }) => {
 	const [anchorEl, setAnchorEl] = React.useState(null);

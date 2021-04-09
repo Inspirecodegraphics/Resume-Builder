@@ -1,4 +1,3 @@
-import logo from "./logo.svg";
 import React, { useState, useEffect } from "react";
 import { auth } from "./services/firebase";
 import "./App.css";
@@ -9,7 +8,7 @@ import Home from "./components/pages/home/Home";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import MainContent from "./components/layout/MainContent";
 import Footer from "./components/layout/Footer";
-import UserProvider from "./Providers/userProvider";
+import { AuthProvider } from "./Providers/AuthProvider";
 const drawerWidth = 240;
 
 function App() {
@@ -19,14 +18,14 @@ function App() {
 	const handleDrawerToggle = () => {
 		setOpen(!open);
 	};
-	useEffect(() => {
-		auth().onAuthStateChanged((userAuth) => {
-			setUser(userAuth);
-		});
-	});
+	// useEffect(() => {
+	// 	auth().onAuthStateChanged((userAuth) => {
+	// 		setUser(userAuth);
+	// 	});
+	// });
 
 	return (
-		<UserProvider>
+		<AuthProvider>
 			<Router>
 				<div>
 					<CssBaseline />
@@ -44,7 +43,7 @@ function App() {
 					<Footer></Footer>
 				</div>
 			</Router>
-		</UserProvider>
+		</AuthProvider>
 	);
 }
 

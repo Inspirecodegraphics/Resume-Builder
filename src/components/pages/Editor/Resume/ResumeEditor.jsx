@@ -1,15 +1,19 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
+
+// Material UI Core
 import TextField from "@material-ui/core/TextField";
-import "./ResumeEditor.css";
+import { makeStyles } from "@material-ui/core/styles";
+
+// SVG Icons
 import { ReactComponent as Layout } from "../../../../static/icon/layout.svg";
 import { ReactComponent as Theme } from "../../../../static/icon/theme.svg";
 import { ReactComponent as Settings } from "../../../../static/icon/settings.svg";
 
 import FontSelect from "./FontSelect";
-import { makeStyles } from "@material-ui/core/styles";
-import { getUser } from "../../../../services/resumeService";
 import Header from "./Header";
+import { getUser } from "../../../../services/resumeService";
+import "./ResumeEditor.css";
 
 const ResumeEditor = (props) => {
 	const id = props.match.params.id;
@@ -23,13 +27,13 @@ const ResumeEditor = (props) => {
 	}, []);
 
 	return (
-		<section
-			style={{ fontFamily: `${selectedFont}, sans-serif` }}
-			className="rb-editor"
-		>
+		<section className="rb-editor">
 			<div className="container-fluid">
 				<div className="rb-editor-container-fluid py-5">
-					<div className="row d-flex justify-content-center">
+					<div
+						style={{ fontFamily: `${selectedFont}, sans-serif` }}
+						className="row d-flex justify-content-center"
+					>
 						<div className="rb-editor-container">
 							<p>Resume</p>
 							<form noValidate autoComplete="off">

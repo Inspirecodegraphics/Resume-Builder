@@ -100,7 +100,7 @@ const user = [
 				icon: "fab fa-instagram",
 				link: "https://www.instagram.com/guptaashwanee",
 			},
-			linkedin: {
+			linkedIn: {
 				label: "LinkedIn",
 				icon: "fab fa-linkedin-in",
 				link: "https://www.linkedin.com/in/guptaashwanee/",

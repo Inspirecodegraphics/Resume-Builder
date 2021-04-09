@@ -1,22 +1,27 @@
 import React from "react";
 import Joi from "joi-browser";
-import Form from "../../../common/Form";
-import TextField from "@material-ui/core/TextField";
-import FormControlLabel from "@material-ui/core/FormControlLabel";
-import Checkbox from "@material-ui/core/Checkbox";
+import "date-fns";
+// Material UI Core
 import IconButton from "@material-ui/core/IconButton";
 import Snackbar from "@material-ui/core/Snackbar";
 import InputAdornment from "@material-ui/core/InputAdornment";
+import DialogActions from "@material-ui/core/DialogActions";
+import Button from "@material-ui/core/Button";
+import DateFnsUtils from "@date-io/date-fns";
+import {
+	MuiPickersUtilsProvider,
+	KeyboardDatePicker,
+} from "@material-ui/pickers";
 // Material UI Icons
 import PhoneIphoneIcon from "@material-ui/icons/PhoneIphone";
 import EmailIcon from "@material-ui/icons/Email";
-import SubjectIcon from "@material-ui/icons/Subject";
 import LocationOnIcon from "@material-ui/icons/LocationOn";
-import PersonIcon from "@material-ui/icons/Person";
-import SendIcon from "@material-ui/icons/Send";
-import { setUserContact } from "../../../../services/resumeService";
-import DialogActions from "@material-ui/core/DialogActions";
-import Button from "@material-ui/core/Button";
+import CloseIcon from "@material-ui/icons/Close";
+import CheckIcon from "@material-ui/icons/Check";
+import LabelImportantIcon from "@material-ui/icons/LabelImportant";
+import DescriptionIcon from "@material-ui/icons/Description";
+import Form from "../../../common/RbForm";
+import InputField from "../../../common/InputField";
 
 // import firebase from "../../../services/firebase";
 
@@ -24,170 +29,343 @@ class AccountForm extends Form {
 	state = {
 		mainContent: {
 			email: "",
+			name: "",
+			dob: "",
 			phoneNumber: "",
 			address: "",
+			desc: "",
+			tag: "",
 		},
-		notification: false,
-		subscribe: false,
+		social: {
+			website: "",
+			linkedIn: "",
+			twitter: "",
+			facebook: "",
+			quora: "",
+			instagram: "",
+			stackOverFlow: "",
+			github: "",
+		},
 		errors: {},
+		notification: false,
 	};
 	componentDidMount() {
-		let { user } = this.props;
+		let { currentUser } = this.props;
 		let mainContent = {
-			address: user.mainContact.address.link,
-			email: user.mainContact.email.link,
-			phoneNumber: user.mainContact.phoneNumber.link,
+			address: currentUser.address || "",
+			email: currentUser.email || "",
+			phoneNumber: currentUser.phoneNumber || "",
+			name: currentUser.displayName || "",
+			dob: currentUser.dob || new Date(),
 		};
 		this.setState({ mainContent });
 	}
 	schema = {
-		name: Joi.string().label("Name"),
-		email: Joi.string()
-			.email({ minDomainSegments: 1, tlds: { allow: ["com", "net"] } })
-			.label("Email"),
-		phoneNumber: Joi.string().max(10).min(10).label("Contact"),
-		subject: Joi.string().max(25).label("Subject"),
-		address: Joi.string().max(250).label("Address"),
+		mainContent: {
+			email: Joi.string()
+				.allow("")
+				.email({ minDomainSegments: 1, tlds: { allow: ["com", "net"] } })
+				.label("Email"),
+			phoneNumber: Joi.string().allow("").max(10).min(10).label("Contact"),
+			address: Joi.string().allow("").max(250).label("Address"),
+			desc: Joi.string().allow("").max(250).label("Description"),
+			tag: Joi.string().allow("").max(50).label("Tagline"),
+			name: Joi.string().allow("").max(25).label("Name"),
+			dob: Joi.optional().label("Date"),
+		},
+		social: {
+			website: Joi.string().allow("").uri(),
+			linkedIn: Joi.string().allow("").uri(),
+			twitter: Joi.string().allow("").uri(),
+			facebook: Joi.string().allow("").uri(),
+			quora: Joi.string().allow("").uri(),
+			instagram: Joi.string().allow("").uri(),
+			stackOverFlow: Joi.string().allow("").uri(),
+			github: Joi.string().allow("").uri(),
+		},
 	};
-	doSubmit = async () => {
+	doSubmit = async (type) => {
 		// firebase.writeToUs(this.state.mainContent);
-		setUserContact(this.state.mainContent);
-		console.log("Your messege has been sent.", this.state.mainContent);
-
-		this.setState({
-			notification: true,
-			mainContent: {
-				name: "",
-				email: "",
-				phoneNumber: "",
-				subject: "",
-				address: "",
-			},
-		});
+		console.log("Content", this.state[type]);
+		console.log("Error", this.state.errors);
+		this.setState({ notification: true });
+	};
+	handleDateChange = (date) => {
+		const mainContent = { ...this.state.mainContent };
+		mainContent.dob = date;
+		this.setState({ mainContent });
+	};
+	handleNotificationClose = (event, reason) => {
+		if (reason === "clickaway") {
+			return;
+		}
+		this.setState({ notification: false });
 	};
 	render() {
-		const { mainContent, errors, subscribe, notification } = this.state;
+		const { type } = this.props;
+		const { notification } = this.state;
+
 		return (
-			<form onSubmit={this.handleSubmit}>
-				<div className="row mb-2">
-					<div className="col-md-6 my-2">
-						<TextField
-							error={errors.email}
-							className=""
-							placeholder="abcd@domain.com"
-							id="email"
-							label="Email id"
-							type="email"
-							fullWidth
-							name="email"
-							value={mainContent.email}
-							onChange={this.handleChange}
-							variant="standard"
-							color="primary"
-							helperText={errors.email}
-							InputProps={{
-								startAdornment: (
-									<InputAdornment position="start">
-										<EmailIcon fontSize="small" className="text-muted" />
-									</InputAdornment>
-								),
-							}}
-						></TextField>
-					</div>
-					<div className="col-md-6 my-2">
-						<TextField
-							error={errors.phoneNumber}
-							className=""
-							type="tel"
-							id="phoneNumber"
-							label="Your Phone"
-							fullWidth
-							placeholder="9999999999"
-							value={mainContent.phoneNumber}
-							name="phoneNumber"
-							onChange={this.handleChange}
-							variant="standard"
-							color="primary"
-							helperText={errors.phoneNumber}
-							InputProps={{
-								startAdornment: (
-									<InputAdornment position="start">
-										<PhoneIphoneIcon fontSize="small" className="text-muted" />
-									</InputAdornment>
-								),
-							}}
-						></TextField>
-					</div>
-				</div>
-				<div className="row mb-2 position-relative">
-					<div className="col-12 my-2 pr-5">
-						<TextField
-							error={errors.address}
-							id="address"
-							label="Address"
-							fullWidth
-							className="pr-5"
-							placeholder="Address"
-							name="address"
-							value={mainContent.address}
-							onChange={this.handleChange}
-							variant="standard"
-							color="primary"
-							helperText={errors.address}
-							InputProps={{
-								startAdornment: (
-									<InputAdornment position="start">
-										<LocationOnIcon fontSize="small" className="text-muted" />
-									</InputAdornment>
-								),
-							}}
-						></TextField>
-					</div>
-					<div className="col my-2">
-						<FormControlLabel
-							className="mx-0 mb-0"
-							control={
-								<Checkbox
-									checked={subscribe}
-									onChange={(e) =>
-										this.setState({ subscribe: e.target.checked })
-									}
-									name="Subscribe"
-								/>
-							}
-							label="Subscribe Us to get latest update."
-						/>
-					</div>
-					{/* <div
-						className="bg-dark btn-rounded"
-						style={{ position: "absolute", top: 25, right: 12 }}
-					>
-						<IconButton aria-label="send" type="submit">
-							<SendIcon
-								style={{
-									fontSize: 40,
-									color: "white",
-									transform: "rotate(-45deg)",
-								}}
-							/>
-						</IconButton>
-					</div> */}
-				</div>
+			<div>
+				{type === "Main Contact" ? this.main() : this.social()}
 				<Snackbar
+					className="bg-suscess"
+					severity="success"
 					anchorOrigin={{ vertical: "top", horizontal: "right" }}
 					open={notification}
-					onClose={() => {
-						this.setState({ notification: false });
-					}}
-					message="Message sent successfully."
-					autoHideDuration={2000}
-				/>
+					onClose={this.handleNotificationClose}
+					action={
+						<IconButton
+							size="small"
+							aria-label="close"
+							color="inherit"
+							onClick={this.handleNotificationClose}
+						>
+							<CloseIcon fontSize="small" />
+						</IconButton>
+					}
+					message={
+						<span>
+							<CheckIcon classmane="p-2 m-2"></CheckIcon>
+							Content Saved suscessfully
+						</span>
+					}
+					autoHideDuration={5000}
+				></Snackbar>
+			</div>
+		);
+	}
+	social() {
+		const { social, errors } = this.state;
+
+		return (
+			<form onSubmit={this.handleSubmit("social")}>
+				<div className="row mb-2">
+					<div className="col-md-6 my-2">
+						<InputField
+							handleChange={this.handleChange("social")}
+							error={errors.website}
+							value={social.website}
+							type="text"
+							placeholder="website.com"
+							name="website"
+							label="Website"
+							icon={<i className="fas fa-globe text-muted" />}
+						></InputField>
+					</div>
+					<div className="col-md-6 my-2">
+						<InputField
+							handleChange={this.handleChange("social")}
+							error={errors.linkedIn}
+							value={social.linkedIn}
+							type="text"
+							placeholder="LinkedIn"
+							name="linkedIn"
+							label="LinkedIn"
+							icon={<i className="fab fa-linkedin-in text-muted" />}
+						></InputField>
+					</div>
+					<div className="col-md-6 my-2">
+						<InputField
+							handleChange={this.handleChange("social")}
+							error={errors.twitter}
+							value={social.twitter}
+							type="text"
+							placeholder="Twitter"
+							name="twitter"
+							label="Twitter"
+							icon={<i className="fab fa-twitter text-muted" />}
+						></InputField>
+					</div>
+					<div className="col-md-6 my-2">
+						<InputField
+							handleChange={this.handleChange("social")}
+							error={errors.quora}
+							value={social.quora}
+							type="text"
+							placeholder="Quora"
+							name="quora"
+							label="Quora"
+							icon={<i className="fab fa-quora text-muted" />}
+						></InputField>
+					</div>
+					<div className="col-md-6 my-2">
+						<InputField
+							handleChange={this.handleChange("social")}
+							error={errors.facebook}
+							value={social.facebook}
+							type="text"
+							placeholder="Facebook"
+							name="facebook"
+							label="Facebook"
+							icon={<i className="fab fa-facebook-f text-muted" />}
+						></InputField>
+					</div>
+					<div className="col-md-6 my-2">
+						<InputField
+							handleChange={this.handleChange("social")}
+							error={errors.instagram}
+							value={social.instagram}
+							type="text"
+							placeholder="Instagram"
+							name="instagram"
+							label="Instagram"
+							icon={<i className="fab fa-instagram text-muted" />}
+						></InputField>
+					</div>
+					<div className="col-md-6 my-2">
+						<InputField
+							handleChange={this.handleChange("social")}
+							error={errors.github}
+							value={social.github}
+							type="text"
+							placeholder="Github"
+							name="github"
+							label="Github"
+							icon={<i className="fab fa-github text-muted" />}
+						></InputField>
+					</div>
+					<div className="col-md-6 my-2">
+						<InputField
+							handleChange={this.handleChange("social")}
+							error={errors.stackOverFlow}
+							value={social.stackOverFlow}
+							type="text"
+							placeholder="StackOverFlow"
+							name="stackOverFlow"
+							label="StackOverFlow"
+							icon={<i className="fab fa-stack-overflow text-muted" />}
+						></InputField>
+					</div>
+				</div>
 				<DialogActions>
 					<Button onClick={this.props.handleClose} color="primary">
 						Cancel
 					</Button>
 					<Button
-						onClick={this.props.handleClose}
+						// onClick={this.props.handleClose}
+						type="submit"
+						color="primary"
+					>
+						Save
+					</Button>
+				</DialogActions>
+			</form>
+		);
+	}
+	main() {
+		const { mainContent, errors } = this.state;
+
+		return (
+			<form onSubmit={this.handleSubmit("mainContent")}>
+				<div className="row mb-2">
+					<div className="col-md-6 my-2">
+						<InputField
+							handleChange={this.handleChange("mainContent")}
+							error={errors.name}
+							value={mainContent.name}
+							type="Name"
+							placeholder="User"
+							name="name"
+							label="Name"
+							icon={<i className="fas fa-user text-muted" />}
+						></InputField>
+					</div>
+					<div className="col-md-6 my-2">
+						<MuiPickersUtilsProvider utils={DateFnsUtils}>
+							<KeyboardDatePicker
+								fullWidth
+								id="dob"
+								placeholder="MM/dd/yyyy"
+								label="Date of Birth"
+								format="MM/dd/yyyy"
+								value={mainContent.dob}
+								onChange={this.handleDateChange}
+								KeyboardButtonProps={{
+									"aria-label": "change date",
+								}}
+								InputProps={{
+									startAdornment: (
+										<InputAdornment position="start">
+											<i className="far fa-calendar-alt text-muted"></i>
+										</InputAdornment>
+									),
+								}}
+							/>
+						</MuiPickersUtilsProvider>
+					</div>
+					<div className="col-md-6 my-2">
+						<InputField
+							handleChange={this.handleChange("mainContent")}
+							error={errors.email}
+							value={mainContent.email}
+							type="text"
+							placeholder="abcd@domain.com"
+							name="email"
+							label="Email id"
+							icon={<EmailIcon fontSize="small" className="text-muted" />}
+						></InputField>
+					</div>
+					<div className="col-md-6 my-2">
+						<InputField
+							handleChange={this.handleChange("mainContent")}
+							error={errors.phoneNumber}
+							value={mainContent.phoneNumber}
+							type="text"
+							placeholder="123456789"
+							name="phoneNumber"
+							label="Your Phone"
+							icon={<PhoneIphoneIcon fontSize="small" className="text-muted" />}
+						></InputField>
+					</div>
+					<div className="col-md-6 my-2">
+						<InputField
+							handleChange={this.handleChange("mainContent")}
+							error={errors.address}
+							value={mainContent.address}
+							type="text"
+							placeholder="Address"
+							name="address"
+							label="Address"
+							icon={<LocationOnIcon fontSize="small" className="text-muted" />}
+						></InputField>
+					</div>
+					<div className="col-md-6 my-2">
+						<InputField
+							handleChange={this.handleChange("mainContent")}
+							error={errors.tag}
+							value={mainContent.tag}
+							type="text"
+							placeholder="Tagline"
+							name="tag"
+							label="Tagline"
+							icon={
+								<LabelImportantIcon fontSize="small" className="text-muted" />
+							}
+						></InputField>
+					</div>
+					<div className="col-md-12 my-2">
+						<InputField
+							handleChange={this.handleChange("mainContent")}
+							error={errors.desc}
+							value={mainContent.desc}
+							type="text"
+							placeholder="Enter short description"
+							name="desc"
+							multiline
+							rows={2}
+							label="Description"
+							icon={<DescriptionIcon fontSize="small" className="text-muted" />}
+						></InputField>
+					</div>
+				</div>
+
+				<DialogActions>
+					<Button onClick={this.props.handleClose} color="primary">
+						Cancel
+					</Button>
+					<Button
+						// onClick={this.props.handleClose}
 						type="submit"
 						color="primary"
 					>

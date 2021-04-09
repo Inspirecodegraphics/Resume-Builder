@@ -14,10 +14,10 @@ import Typography from "@material-ui/core/Typography";
 import List from "@material-ui/core/List";
 import Divider from "@material-ui/core/Divider";
 import Tooltip from "@material-ui/core/Tooltip";
+import Paper from "@material-ui/core/Paper";
 
 // MIUI Icons
 import AccountCircle from "@material-ui/icons/AccountCircle";
-import { Paper } from "@material-ui/core";
 
 const useStyles = makeStyles((theme) => ({
 	root: {

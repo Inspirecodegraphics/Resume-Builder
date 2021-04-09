@@ -19,8 +19,7 @@ import SearchIcon from "@material-ui/icons/Search";
 import NotificationsNoneIcon from "@material-ui/icons/NotificationsNone";
 
 import Dropdown from "../common/Dropdown";
-import { signInWithGoogle } from "../../services/utils/auth";
-import { UserContext } from "./../../Providers/userProvider";
+import { useAuth } from "../../Providers/AuthProvider";
 import LoginModal from "./../LoginModal";
 
 const Navbar = ({ open, handleDrawerToggle, drawerWidth }) => {
@@ -42,7 +41,11 @@ const Navbar = ({ open, handleDrawerToggle, drawerWidth }) => {
 		title: {
 			flexGrow: 1,
 		},
-
+		button: {
+			...theme.typography.button,
+			backgroundColor: theme.palette.background.paper,
+			padding: theme.spacing(1),
+		},
 		drawerPaper: {
 			width: drawerWidth,
 		},
@@ -109,9 +112,8 @@ const Navbar = ({ open, handleDrawerToggle, drawerWidth }) => {
 			textTransform: "capitalize",
 		},
 	}));
-	const [loginModalOpen, setLoginModalOpen] = React.useState(true);
-
-	const currentUser = useContext(UserContext);
+	const [loginModalOpen, setLoginModalOpen] = React.useState(false);
+	const { currentUser } = useAuth();
 	const classes = useStyles();
 	const user = {
 		type: "User",
@@ -126,6 +128,10 @@ const Navbar = ({ open, handleDrawerToggle, drawerWidth }) => {
 			{
 				label: "My account",
 				link: "/my-account",
+			},
+			{
+				label: "Logout",
+				// link: "/my-account",
 			},
 		],
 	};
@@ -152,10 +158,6 @@ const Navbar = ({ open, handleDrawerToggle, drawerWidth }) => {
 		],
 	};
 
-	// const signInWithGoogle = () => {
-	//   const provider = new firebase.auth.GoogleAuthProvider();
-	//   auth.signInWithPopup(provider);
-	// }
 	const preventDefault = (event) => event.preventDefault();
 	return (
 		<AppBar
@@ -165,9 +167,7 @@ const Navbar = ({ open, handleDrawerToggle, drawerWidth }) => {
 				[classes.appBarShift]: open,
 			})}
 		>
-			<Toolbar
-			// variant="dense"
-			>
+			<Toolbar>
 				<IconButton
 					color="inherit"
 					aria-label="open drawer"
@@ -179,32 +179,27 @@ const Navbar = ({ open, handleDrawerToggle, drawerWidth }) => {
 				</IconButton>
 				<Typography variant="subtitle1" noWrap className={classes.title}>
 					<b>
-						<Link className={classes.link} to="/">
+						<Link className={classes.link + " text-uppercase"} to="/">
 							Resume Builder
 						</Link>
 					</b>
 				</Typography>
 
-				<Button className={classes.linkButton}>
-					<Link className={classes.link} to="/editor">
-						Editor
-					</Link>
-				</Button>
-				<Button className={classes.linkButton}>
-					<Link className={classes.link} to="/resume-templates">
+				<Typography variant="subtitle1">
+					<Link className={classes.link + " px-2"} to="/resume-templates">
 						Resume Templates
 					</Link>
-				</Button>
-				<Button className={classes.linkButton}>
-					<Link className={classes.link} to="/cv-templates">
+				</Typography>
+				<Typography variant="subtitle1">
+					<Link className={classes.link + " px-2"} to="/cv-templates">
 						CV Templates
 					</Link>
-				</Button>
-				<Button className={classes.linkButton}>
-					<Link className={classes.link} to="/cover-Letters">
+				</Typography>
+				<Typography variant="subtitle1">
+					<Link className={classes.link + " px-2"} to="/cover-Letters">
 						Cover Letters
 					</Link>
-				</Button>
+				</Typography>
 
 				<div className={classes.search}>
 					<div className={classes.searchIcon}>
@@ -223,13 +218,21 @@ const Navbar = ({ open, handleDrawerToggle, drawerWidth }) => {
 				<Dropdown item={notification}></Dropdown>
 
 				<Divider orientation="vertical" flexItem />
-
+				{currentUser && (
+					<Typography variant="subtitle1">
+						<Link className={classes.link + " px-2"} to="/editor">
+							My Documets
+						</Link>
+					</Typography>
+				)}
 				<Dropdown setLoginModalOpen={setLoginModalOpen} item={user}></Dropdown>
 			</Toolbar>
-			<LoginModal
-				loginModalOpen={loginModalOpen}
-				setLoginModalOpen={setLoginModalOpen}
-			></LoginModal>
+			{!currentUser && (
+				<LoginModal
+					loginModalOpen={loginModalOpen}
+					setLoginModalOpen={setLoginModalOpen}
+				></LoginModal>
+			)}
 		</AppBar>
 	);
 };

@@ -1,9 +1,11 @@
 import React from "react";
 import clsx from "clsx";
 import { Route, Redirect, Switch } from "react-router-dom";
+// Material UI Core
 import { makeStyles } from "@material-ui/core/styles";
 import Typography from "@material-ui/core/Typography";
 import Grid from "@material-ui/core/Grid";
+// Material UI Icon
 import Home from "./../pages/home/Home";
 import Editor from "./../pages/Editor/Editor";
 import ResumeEditor from "./../pages/Editor/Resume/ResumeEditor";
