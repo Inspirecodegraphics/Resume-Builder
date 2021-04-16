@@ -5,7 +5,7 @@
 }
 .landing {
 	color: #fff;
-	background: linear-gradient(to right, #303d46, #1dbfaf);
+	/* background: linear-gradient(to right, #303d46, #1dbfaf); */
 }
 
 .landing-img-outer img {
@@ -22,4 +22,7 @@
 	right: -11.25vw;
 	top: 7.931vw;
 	width: 10.7492vw;
+}
+.home {
+	overflow: hidden;
 }

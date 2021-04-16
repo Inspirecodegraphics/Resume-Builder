@@ -1,28 +1,24 @@
 import React, { useState, useEffect } from "react";
-import { auth } from "./services/firebase";
 import "./App.css";
 import { BrowserRouter as Router } from "react-router-dom";
 import Navbar from "./components/layout/Navbar";
-import SideBar from "./components/layout/Sidebar";
-import Home from "./components/pages/home/Home";
+import SideBar from "./components/layout/Temp";
 import CssBaseline from "@material-ui/core/CssBaseline";
 import MainContent from "./components/layout/MainContent";
 import Footer from "./components/layout/Footer";
 import { AuthProvider } from "./Providers/AuthProvider";
-const drawerWidth = 240;
+import { oneTapSignIn } from "./services/utils/auth";
+const drawerWidth = 220;
 
 function App() {
 	const [open, setOpen] = useState(false);
-	const [user, setUser] = useState(null);
 
 	const handleDrawerToggle = () => {
 		setOpen(!open);
 	};
-	// useEffect(() => {
-	// 	auth().onAuthStateChanged((userAuth) => {
-	// 		setUser(userAuth);
-	// 	});
-	// });
+	useEffect(() => {
+		window.addEventListener("load", oneTapSignIn);
+	}, []);
 
 	return (
 		<AuthProvider>

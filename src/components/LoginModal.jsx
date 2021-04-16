@@ -15,9 +15,16 @@ import Backdrop from "@material-ui/core/Backdrop";
 import Fade from "@material-ui/core/Fade";
 import Button from "@material-ui/core/Button";
 import Tooltip from "@material-ui/core/Tooltip";
+import Dialog from "@material-ui/core/Dialog";
+import DialogActions from "@material-ui/core/DialogActions";
+import DialogContent from "@material-ui/core/DialogContent";
+import DialogContentText from "@material-ui/core/DialogContentText";
 
 import "./LoginModal.css";
+import { useHistory, useLocation } from "react-router-dom";
+import { auth } from "./../services/firebase";
 import {
+	getProvider,
 	signInWithFacebook,
 	signInWithGoogle,
 	signInWithTwitter,
@@ -26,18 +33,30 @@ import {
 	signUpWithEmailPassword,
 	resetPassword,
 } from "../services/utils/auth";
+import { useAuth } from "../Providers/AuthProvider";
 
-const LoginModal = ({ setLoginModalOpen, loginModalOpen }) => {
+const LoginModal = () => {
 	const [values, setValues] = useState({
 		email: "",
 		password: "",
 		name: "",
 	});
+	const [credData, setCredData] = useState({
+		email: "",
+		password: "",
+	});
+	const { setLoginModalOpen, loginModalOpen, currentUser } = useAuth();
 
+	const [credentialModal, setCredentialModal] = useState(false);
 	const [showPassword, setShowPassword] = useState(false);
 	const [customErrors, setCustomErrors] = useState({});
+	const [cred, setCred] = useState({});
+	const [credMethod, setCredMethod] = useState("");
 	const [errors, setErrors] = useState({});
 	const [type, setType] = useState("Sign In");
+	const history = useHistory();
+	const location = useLocation();
+
 	const schema = {
 		email: Joi.string()
 			.required()
@@ -92,7 +111,7 @@ const LoginModal = ({ setLoginModalOpen, loginModalOpen }) => {
 
 	const handleChange = (prop) => ({ currentTarget: input }) => {
 		const error = { ...errors };
-		setCustomErrors({});
+		!credentialModal && setCustomErrors({});
 		const errorMsg = validateProperty(input);
 		if (errorMsg) error[input.name] = errorMsg;
 		else delete error[input.name];
@@ -111,10 +130,6 @@ const LoginModal = ({ setLoginModalOpen, loginModalOpen }) => {
 		event.preventDefault();
 	};
 
-	const handleOpen = () => {
-		setLoginModalOpen(true);
-	};
-
 	const handleResetPassword = () => {
 		setType("Reset");
 	};
@@ -130,20 +145,70 @@ const LoginModal = ({ setLoginModalOpen, loginModalOpen }) => {
 		setLoginModalOpen(false);
 	};
 
+	const handleSocialSignIn = (provider) => {
+		provider()
+			.then((user) => {
+				console.log(user);
+				redirectUser();
+				setLoginModalOpen(false);
+			})
+			.catch((error) => {
+				if (error.code === "auth/account-exists-with-different-credential") {
+					var pendingCred = error.credential;
+					setCred(pendingCred);
+					console.log(pendingCred);
+					var email = error.email;
+					auth()
+						.fetchSignInMethodsForEmail(email)
+						.then(function (methods) {
+							setCustomErrors({
+								err: `An account already exists with the same email address "${email}". Sign-in with ${methods[0]}`,
+							});
+							const data = { ...credData };
+							data.email = email;
+							setCredData(data);
+							setCredMethod(methods[0]);
+							setCredentialModal(true);
+						});
+				}
+			});
+	};
+	const handleSignInWithCred = () => {
+		if (credMethod === "password") {
+			var password = values.password;
+			signInWithEmailPassword(credData.email, password)
+				.then((result) => {
+					return result.user.linkWithCredential(cred);
+				})
+				.then((user) => redirectUser());
+			return;
+		}
+		auth()
+			.signInWithPopup(getProvider(credMethod))
+			.then((result) => {
+				result.user.linkWithCredential(cred).then((usercred) => {
+					redirectUser();
+				});
+			});
+		setCred({});
+		setCredMethod("");
+	};
 	const doSubmit = async () => {
 		if (type === "Sign In") {
 			signInWithEmailPassword(values.email, values.password)
 				.then((data) => {
-					console.log(data);
 					resetForm();
+					redirectUser();
+					setLoginModalOpen(false);
 				})
 				.catch((err) => customError(err));
 		}
 		if (type === "Sign Up") {
 			signUpWithEmailPassword(values.email, values.password)
 				.then((data) => {
-					console.log(data);
 					resetForm();
+					redirectUser();
+					setLoginModalOpen(false);
 				})
 				.catch((err) => customError(err));
 		}
@@ -158,18 +223,25 @@ const LoginModal = ({ setLoginModalOpen, loginModalOpen }) => {
 				.catch((err) => customError(err));
 		}
 	};
+	const redirectUser = () => {
+		const { state } = location;
+		if (state) window.location = state.from.pathname;
+	};
 	const customError = (err) => {
 		console.log(err.code);
 		if (err.code === "auth/user-not-found") {
-			if (type === "Reset") {
-				setCustomErrors({
-					err: "The account with this Email is not found.",
-				});
-			} else {
-				setCustomErrors({
-					err: "The Email or password you entered was invalid.",
-				});
-			}
+			setCustomErrors({
+				err: "The account with this Email is not found. Create a new one.",
+			});
+			// if (type === "Reset") {
+			// 	setCustomErrors({
+			// 		err: "The account with this Email is not found.",
+			// 	});
+			// } else {
+			// 	setCustomErrors({
+			// 		err: "The Email or password you entered was invalid.",
+			// 	});
+			// }
 		} else if (err.code === "auth/email-already-in-use") {
 			setCustomErrors({
 				err: "This email is already in use. Try RESET password.",
@@ -237,7 +309,7 @@ const LoginModal = ({ setLoginModalOpen, loginModalOpen }) => {
 									<div>
 										<Tooltip placement="bottom" title="Github" arrow>
 											<IconButton
-												onClick={signInWithGitHub}
+												onClick={() => handleSocialSignIn(signInWithGitHub)}
 												aria-label="github signIn"
 											>
 												<i className="fab fa-github text-dark"></i>
@@ -245,7 +317,7 @@ const LoginModal = ({ setLoginModalOpen, loginModalOpen }) => {
 										</Tooltip>
 										<Tooltip placement="bottom" title="Facebook" arrow>
 											<IconButton
-												onClick={signInWithFacebook}
+												onClick={() => handleSocialSignIn(signInWithFacebook)}
 												aria-label="facebook signIn"
 											>
 												<i className="fab fa-facebook text-primary"></i>
@@ -253,7 +325,7 @@ const LoginModal = ({ setLoginModalOpen, loginModalOpen }) => {
 										</Tooltip>
 										<Tooltip placement="bottom" title="Google" arrow>
 											<IconButton
-												onClick={signInWithGoogle}
+												onClick={() => handleSocialSignIn(signInWithGoogle)}
 												aria-label="google signIn"
 											>
 												<i className="social-signin google"></i>
@@ -261,7 +333,7 @@ const LoginModal = ({ setLoginModalOpen, loginModalOpen }) => {
 										</Tooltip>
 										<Tooltip placement="bottom" title="Twitter" arrow>
 											<IconButton
-												onClick={signInWithTwitter}
+												onClick={() => handleSocialSignIn(signInWithTwitter)}
 												aria-label="twitter signIn"
 											>
 												<i className="social-signin twitter"></i>
@@ -394,6 +466,64 @@ const LoginModal = ({ setLoginModalOpen, loginModalOpen }) => {
 									/>
 								</FormGroup>
 							</FormControl>
+							<Dialog
+								maxWidth="xs"
+								open={credentialModal}
+								onClose={() => setCredentialModal(false)}
+								aria-labelledby="form-dialog-title"
+							>
+								<DialogContent>
+									<DialogContentText>{customErrors.err}</DialogContentText>
+									{credMethod === "password" && (
+										<TextField
+											error={errors.password}
+											className=""
+											fullWidth
+											id="signIn-password"
+											label="Password"
+											type={showPassword ? "text" : "password"}
+											placeholder="Password"
+											name="password"
+											value={values.password}
+											onChange={handleChange()}
+											variant="standard"
+											color="primary"
+											helperText={
+												errors.password || "Your password is secured."
+											}
+											required
+											InputProps={{
+												endAdornment: (
+													<InputAdornment position="end">
+														<IconButton
+															aria-label="toggle password visibility"
+															onClick={handleClickShowPassword}
+															onMouseDown={handleMouseDownPassword}
+														>
+															{showPassword ? (
+																<Visibility />
+															) : (
+																<VisibilityOff />
+															)}
+														</IconButton>
+													</InputAdornment>
+												),
+											}}
+										></TextField>
+									)}
+								</DialogContent>
+								<DialogActions>
+									<Button
+										onClick={() => setCredentialModal(false)}
+										color="primary"
+									>
+										Cancel
+									</Button>
+									<Button onClick={handleSignInWithCred} color="primary">
+										Continue
+									</Button>
+								</DialogActions>
+							</Dialog>
 						</div>
 					</div>
 				</div>

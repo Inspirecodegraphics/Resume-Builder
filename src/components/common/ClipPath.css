@@ -1,0 +1,20 @@
+.clip-outer {
+	position: relative;
+	z-index: -1;
+}
+.clip1 {
+	clip-path: polygon(0 90%, 100% 0, 100% 100%, 0% 100%);
+	background-color: rgb(177, 237, 252);
+	width: 100vw;
+	height: 150px;
+	position: absolute;
+	top: 0;
+}
+.clip2 {
+	clip-path: polygon(0 0, 100% 90%, 100% 100%, 0% 100%);
+	background-color: rgb(173, 170, 175);
+	width: 100vw;
+	height: 150px;
+	position: absolute;
+	top: 0;
+}

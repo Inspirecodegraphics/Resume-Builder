@@ -3,14 +3,17 @@ import clsx from "clsx";
 import { Route, Redirect, Switch } from "react-router-dom";
 // Material UI Core
 import { makeStyles } from "@material-ui/core/styles";
-import Typography from "@material-ui/core/Typography";
-import Grid from "@material-ui/core/Grid";
+
 // Material UI Icon
 import Home from "./../pages/home/Home";
 import Editor from "./../pages/Editor/Editor";
 import ResumeEditor from "./../pages/Editor/Resume/ResumeEditor";
+import Login from "./../pages/Login";
 
 import "./MainContent.css";
+import ProtectedRoute from "../common/ProtectedRoute";
+import ComingSoon from "./../ComingSoon";
+import NotFound from "./../NotFound";
 
 const MainContent = ({ open, drawerWidth }) => {
 	const useStyles = makeStyles((theme) => ({
@@ -51,9 +54,24 @@ const MainContent = ({ open, drawerWidth }) => {
 		>
 			<div className={classes.drawerHeader} />
 			<Switch>
+				<Route
+					path="/page/legal/privacy-policy"
+					exact
+					component={ComingSoon}
+				></Route>
 				<Route path="/editor/resume/:id" component={ResumeEditor}></Route>
-				<Route path="/editor" exact component={Editor}></Route>
+				<ProtectedRoute
+					path="/editor"
+					exact
+					component={Editor}
+				></ProtectedRoute>
+				<Route path="/not-found" exact component={NotFound}></Route>
+				<Route path="/cover-Letters" exact component={ComingSoon}></Route>
+				<Route path="/resume-templates" exact component={ComingSoon}></Route>
+				<Route path="/cv-templates" exact component={ComingSoon}></Route>
+				<Route path="/login" exact component={Login}></Route>
 				<Route path="/" exact component={Home}></Route>
+				<Redirect to="not-found"></Redirect>
 			</Switch>
 		</main>
 	);

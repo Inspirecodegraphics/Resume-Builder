@@ -1,7 +1,6 @@
 import React from "react";
 import TextField from "@material-ui/core/TextField";
 import InputAdornment from "@material-ui/core/InputAdornment";
-import { RestoreOutlined } from "@material-ui/icons";
 
 const InputField = ({
 	handleChange,

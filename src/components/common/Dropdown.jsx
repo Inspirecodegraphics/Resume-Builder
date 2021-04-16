@@ -35,7 +35,7 @@ const Dropdown = ({ setLoginModalOpen, item }) => {
 	const open = Boolean(anchorEl);
 	const handleMenu = (event) => {
 		setAnchorEl(event.currentTarget);
-		setLoginModalOpen(true);
+		// setLoginModalOpen(true);
 	};
 
 	const handleClose = () => {

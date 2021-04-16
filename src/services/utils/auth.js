@@ -22,6 +22,54 @@ export async function resetPassword(email) {
 	return auth().sendPasswordResetEmail(email);
 }
 
+export function getProvider(providerId) {
+	switch (providerId) {
+		case auth.TwitterAuthProvider.PROVIDER_ID:
+			return new auth.TwitterAuthProvider();
+		case auth.GoogleAuthProvider.PROVIDER_ID:
+			return new auth.GoogleAuthProvider();
+		case auth.FacebookAuthProvider.PROVIDER_ID:
+			return new auth.FacebookAuthProvider();
+		case auth.GithubAuthProvider.PROVIDER_ID:
+			return new auth.GithubAuthProvider();
+		default:
+			throw new Error(`No provider implemented for ${providerId}`);
+	}
+}
+
+export function oneTapSignIn() {
+	window.google.accounts.id.initialize({
+		client_id:
+			"1058073675937-8jutvojbbef07qvdhgiqavrej4htglkc.apps.googleusercontent.com",
+		callback: handleOneTapSignIn,
+	});
+	auth().onAuthStateChanged((user) => {
+		if (!user) {
+			window.google.accounts.id.prompt((notification) => {
+				if (notification.isNotDisplayed()) {
+					console.log(notification.getNotDisplayedReason());
+				} else if (notification.isSkippedMoment()) {
+					console.log(notification.getSkippedReason());
+				} else if (notification.isDismissedMoment()) {
+					console.log(notification.getDismissedReason());
+				}
+			});
+		}
+	});
+}
+
+const handleOneTapSignIn = (response) => {
+	var credential = auth.GoogleAuthProvider.credential(response.credential);
+	auth()
+		.signInWithCredential(credential)
+		.catch((error) => {
+			console.log(error);
+		})
+		.then((data) => {
+			// console.log(data);
+		});
+};
+
 export function signInWithGitHub() {
 	const provider = new auth.GithubAuthProvider();
 	return auth().signInWithPopup(provider);

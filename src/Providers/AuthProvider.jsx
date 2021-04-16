@@ -1,10 +1,4 @@
-import React, {
-	Component,
-	createContext,
-	useContext,
-	useState,
-	useEffect,
-} from "react";
+import React, { createContext, useContext, useState, useEffect } from "react";
 import { auth } from "../services/firebase";
 import { generateUserDocument } from "../services/utils/auth";
 
@@ -15,6 +9,7 @@ export function useAuth() {
 }
 export function AuthProvider({ children }) {
 	const [currentUser, setCurrentUser] = useState();
+	const [loginModalOpen, setLoginModalOpen] = React.useState(false);
 	const [loading, setLoading] = useState(true);
 	useEffect(() => {
 		const unsubscribe = auth().onAuthStateChanged(async (userAuth) => {
@@ -27,6 +22,8 @@ export function AuthProvider({ children }) {
 	}, []);
 	const value = {
 		currentUser,
+		loginModalOpen,
+		setLoginModalOpen,
 	};
 	return (
 		<AuthContext.Provider value={value}>
@@ -35,27 +32,3 @@ export function AuthProvider({ children }) {
 		</AuthContext.Provider>
 	);
 }
-// class UserProvider extends Component {
-// 	state = {
-// 		user: null,
-// 	};
-
-// 	componentDidMount = async () => {
-// 		auth().onAuthStateChanged(async (userAuth) => {
-// 			const user = await generateUserDocument(userAuth);
-// 			this.setState({ user });
-// 		});
-// 	};
-
-// 	render() {
-// 		const { user } = this.state;
-
-// 		return (
-// 			<AuthContext.Provider value={user}>
-// 				{this.props.children}
-// 			</AuthContext.Provider>
-// 		);
-// 	}
-// }
-
-// export default UserProvider;

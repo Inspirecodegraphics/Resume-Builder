@@ -10,7 +10,6 @@ import Typography from "@material-ui/core/Typography";
 import IconButton from "@material-ui/core/IconButton";
 import InputBase from "@material-ui/core/InputBase";
 import Button from "@material-ui/core/Button";
-
 import Divider from "@material-ui/core/Divider";
 // MIUI Icons
 import MenuIcon from "@material-ui/icons/Menu";
@@ -21,22 +20,15 @@ import NotificationsNoneIcon from "@material-ui/icons/NotificationsNone";
 import Dropdown from "../common/Dropdown";
 import { useAuth } from "../../Providers/AuthProvider";
 import LoginModal from "./../LoginModal";
+import UserDropdown from "./UserDropdown";
 
-const Navbar = ({ open, handleDrawerToggle, drawerWidth }) => {
+const Navbar = ({ handleDrawerToggle, drawerWidth }) => {
 	const useStyles = makeStyles((theme) => ({
 		appBar: {
 			transition: theme.transitions.create(["margin", "width"], {
 				easing: theme.transitions.easing.sharp,
 				duration: theme.transitions.duration.leavingScreen,
 			}),
-		},
-		appBarShift: {
-			width: `calc(100% - ${drawerWidth}px)`,
-			transition: theme.transitions.create(["margin", "width"], {
-				easing: theme.transitions.easing.easeOut,
-				duration: theme.transitions.duration.enteringScreen,
-			}),
-			marginLeft: drawerWidth,
 		},
 		title: {
 			flexGrow: 1,
@@ -57,12 +49,8 @@ const Navbar = ({ open, handleDrawerToggle, drawerWidth }) => {
 				backgroundColor: fade(theme.palette.common.white, 0.25),
 			},
 			marginLeft: 0,
-			width: "100%",
+			width: "auto",
 			cursor: "pointer",
-			[theme.breakpoints.up("sm")]: {
-				marginLeft: theme.spacing(1),
-				width: "auto",
-			},
 		},
 		searchIcon: {
 			padding: theme.spacing(0, 2),
@@ -112,29 +100,10 @@ const Navbar = ({ open, handleDrawerToggle, drawerWidth }) => {
 			textTransform: "capitalize",
 		},
 	}));
-	const [loginModalOpen, setLoginModalOpen] = React.useState(false);
-	const { currentUser } = useAuth();
+	// const [loginModalOpen, setLoginModalOpen] = React.useState(false);
+	const { currentUser, setLoginModalOpen } = useAuth();
 	const classes = useStyles();
-	const user = {
-		type: "User",
-		label: "current user",
-		className: "menu-appbar",
-		icon: <AccountCircle />,
-		menuItem: [
-			{
-				label: `${currentUser ? currentUser.displayName : "asd"}`,
-				link: "/profile",
-			},
-			{
-				label: "My account",
-				link: "/my-account",
-			},
-			{
-				label: "Logout",
-				// link: "/my-account",
-			},
-		],
-	};
+
 	const notification = {
 		type: "Notification",
 		label: "current notification",
@@ -160,13 +129,7 @@ const Navbar = ({ open, handleDrawerToggle, drawerWidth }) => {
 
 	const preventDefault = (event) => event.preventDefault();
 	return (
-		<AppBar
-			color="white"
-			position="fixed"
-			className={clsx(classes.appBar, {
-				[classes.appBarShift]: open,
-			})}
-		>
+		<AppBar color="white" position="fixed" className={clsx(classes.appBar)}>
 			<Toolbar>
 				<IconButton
 					color="inherit"
@@ -185,17 +148,17 @@ const Navbar = ({ open, handleDrawerToggle, drawerWidth }) => {
 					</b>
 				</Typography>
 
-				<Typography variant="subtitle1">
+				<Typography className="d-none d-lg-block" variant="subtitle1">
 					<Link className={classes.link + " px-2"} to="/resume-templates">
 						Resume Templates
 					</Link>
 				</Typography>
-				<Typography variant="subtitle1">
+				<Typography className="d-none d-lg-block" variant="subtitle1">
 					<Link className={classes.link + " px-2"} to="/cv-templates">
 						CV Templates
 					</Link>
 				</Typography>
-				<Typography variant="subtitle1">
+				<Typography className="d-none d-lg-block" variant="subtitle1">
 					<Link className={classes.link + " px-2"} to="/cover-Letters">
 						Cover Letters
 					</Link>
@@ -219,20 +182,16 @@ const Navbar = ({ open, handleDrawerToggle, drawerWidth }) => {
 
 				<Divider orientation="vertical" flexItem />
 				{currentUser && (
-					<Typography variant="subtitle1">
+					<Typography className="d-none d-lg-block" variant="subtitle1">
 						<Link className={classes.link + " px-2"} to="/editor">
 							My Documets
 						</Link>
 					</Typography>
 				)}
-				<Dropdown setLoginModalOpen={setLoginModalOpen} item={user}></Dropdown>
+
+				<UserDropdown setLoginModalOpen={setLoginModalOpen}></UserDropdown>
 			</Toolbar>
-			{!currentUser && (
-				<LoginModal
-					loginModalOpen={loginModalOpen}
-					setLoginModalOpen={setLoginModalOpen}
-				></LoginModal>
-			)}
+			{!currentUser && <LoginModal></LoginModal>}
 		</AppBar>
 	);
 };
