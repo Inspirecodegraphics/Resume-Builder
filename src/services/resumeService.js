@@ -1,3 +1,5 @@
+import { auth, firestore } from "./firebase";
+
 const resume = [
 	{
 		id: 1,
@@ -176,6 +178,7 @@ const setUserContact = (data) => {
 	});
 	// user[1].address.add = data.address;
 };
+
 const setUserSocial = (social) => {};
 
 export { getResume, getUser, setUserContact };

@@ -9,14 +9,14 @@ import Tab from "@material-ui/core/Tab";
 import AccountForm from "./AccountForm";
 import { useAuth } from "../../../../Providers/AuthProvider";
 
-export default function AccountDailog({ open, setOpen }) {
+export default function AccountDailog({ resume, open, setOpen }) {
 	const [value, setValue] = useState(0);
-	const { currentUser } = useAuth();
+	const { currentUser, currentResume } = useAuth();
 	const type = ["Main Contact", "Social"];
 	const handleClose = () => {
 		setOpen(false);
 	};
-
+	console.log("Dialog");
 	const handleTabChange = (event, newValue) => {
 		setValue(newValue);
 	};
@@ -47,6 +47,7 @@ export default function AccountDailog({ open, setOpen }) {
 						</Tabs>
 					</Paper>
 					<AccountForm
+						currentResume={currentResume}
 						type={type[value]}
 						currentUser={currentUser}
 						handleClose={handleClose}

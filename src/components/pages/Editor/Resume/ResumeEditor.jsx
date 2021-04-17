@@ -12,18 +12,33 @@ import { ReactComponent as Settings } from "../../../../static/icon/settings.svg
 
 import FontSelect from "./FontSelect";
 import Header from "./Header";
-import { getUser } from "../../../../services/resumeService";
 import "./ResumeEditor.css";
+
+import { useAuth } from "../../../../Providers/AuthProvider";
 
 const ResumeEditor = (props) => {
 	const id = props.match.params.id;
 	const [selectedFont, setSelectedFont] = useState("Roboto");
-	const [user, setUser] = useState(null);
 	const fonts = ["Merriweather", "Raleway", "Ubuntu", "Roboto", "Kiwi Maru"];
+	const [resume, setResume] = useState({});
+	const { currentUser, currentResume } = useAuth();
 
 	useEffect(() => {
-		const user = getUser();
-		setUser(user);
+		// async function fetchResume() {
+		// 	console.log("Firebase Called");
+		// 	try {
+		// 		db.doc(`users/${currentUser.uid}/resumes/${"1"}`).onSnapshot((doc) => {
+		// 			console.log("Current data: ", doc.data());
+		// 			setResume(doc.data());
+		// 		});
+		// 	} catch (error) {
+		// 		console.error("Error fetching Document", error);
+		// 	}
+		// 	// const resume = await getResumes();
+		// 	// console.log(resume);
+		// 	// setResume(resume);
+		// }
+		// fetchResume();
 	}, []);
 
 	return (
@@ -39,7 +54,8 @@ const ResumeEditor = (props) => {
 							<form noValidate autoComplete="off">
 								<TextField value="Resume" id="standard-basic" />
 							</form>
-							<Header user={user}></Header>
+							<Header></Header>
+							{/* <h1>{currentResume && currentResume.mainContent.email}</h1> */}
 						</div>
 					</div>
 				</div>

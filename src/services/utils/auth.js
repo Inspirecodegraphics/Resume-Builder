@@ -37,7 +37,7 @@ export function getProvider(providerId) {
 	}
 }
 
-export function oneTapSignIn() {
+export function oneTapSignIn(handleOneTapSignIn) {
 	window.google.accounts.id.initialize({
 		client_id:
 			"1058073675937-8jutvojbbef07qvdhgiqavrej4htglkc.apps.googleusercontent.com",
@@ -66,6 +66,7 @@ const handleOneTapSignIn = (response) => {
 			console.log(error);
 		})
 		.then((data) => {
+			return data;
 			// console.log(data);
 		});
 };
@@ -79,7 +80,54 @@ export function logout() {
 	return auth().signOut();
 }
 
-export const generateUserDocument = async (user, additionalData) => {
+export const generateResumeDocument = async (
+	resumeId,
+	user,
+	callback,
+	additionalData
+) => {
+	if (!user) return;
+	const resumeCollection = firestore.collection(`/users/${user.uid}/resumes`);
+	if ((await resumeCollection.get()).empty) {
+		const resumeRef = firestore.doc(`/users/${user.uid}/resumes/${resumeId}`);
+		const snapshot = await resumeRef.get();
+
+		if (!snapshot.exists) {
+			try {
+				await resumeRef.set({
+					resumeId,
+					mainContent: {},
+					social: {},
+					...additionalData,
+				});
+			} catch (error) {
+				console.error("Error creating user document", error);
+			}
+		}
+		return getResumeDocument(resumeId, user.uid);
+	}
+
+	const userDocument = await firestore.doc(`users/${user.uid}`).get();
+	const currentUser = userDocument.data();
+
+	getResumeDocument(currentUser.resumeId, user.uid, callback);
+};
+const getResumeDocument = async (resumeId, uid, callback) => {
+	if (!uid && !resumeId) return null;
+	try {
+		firestore.doc(`/users/${uid}/resumes/${resumeId}`).onSnapshot((doc) => {
+			console.log(doc.data());
+			callback(doc.data());
+		});
+		// const resumeDocument = await firestore
+		// 	.doc(`/users/${uid}/resumes/${resumeId}`)
+		// 	.get();
+	} catch (error) {
+		console.error("Error fetching user", error);
+	}
+};
+
+export const generateUserDocument = async (user, resumeId, additionalData) => {
 	if (!user) return;
 
 	const userRef = firestore.doc(`users/${user.uid}`);
@@ -92,6 +140,7 @@ export const generateUserDocument = async (user, additionalData) => {
 				displayName,
 				email,
 				photoURL,
+				resumeId,
 				...additionalData,
 			});
 		} catch (error) {

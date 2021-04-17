@@ -136,7 +136,7 @@ const Navbar = ({ handleDrawerToggle, drawerWidth }) => {
 					aria-label="open drawer"
 					edge="start"
 					onClick={handleDrawerToggle}
-					// className={clsx(open && classes.hide)}
+					className="d-lg-none"
 				>
 					<MenuIcon />
 				</IconButton>

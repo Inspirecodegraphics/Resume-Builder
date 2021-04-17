@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { getResume } from "./../../../services/resumeService";
 
@@ -9,6 +9,7 @@ const Editor = () => {
 		const resume = getResume();
 		history.push(`/editor/resume/${resume[0].id}`);
 	};
+
 	return (
 		<section className="container">
 			<div className="row justify-content-center py-4">
@@ -16,7 +17,9 @@ const Editor = () => {
 				<div
 					className="col-10 col-md-4 box resume-content"
 					onClick={handleEditorClick}
-				></div>
+				>
+					Click Me
+				</div>
 			</div>
 		</section>
 	);

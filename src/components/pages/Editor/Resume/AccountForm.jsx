@@ -22,15 +22,15 @@ import LabelImportantIcon from "@material-ui/icons/LabelImportant";
 import DescriptionIcon from "@material-ui/icons/Description";
 import Form from "../../../common/RbForm";
 import InputField from "../../../common/InputField";
-
 // import firebase from "../../../services/firebase";
+import { writeResume } from "./../../../../services/utils/db";
 
 class AccountForm extends Form {
 	state = {
 		mainContent: {
 			email: "",
 			name: "",
-			dob: "",
+			dob: new Date(),
 			phoneNumber: "",
 			address: "",
 			desc: "",
@@ -50,15 +50,36 @@ class AccountForm extends Form {
 		notification: false,
 	};
 	componentDidMount() {
-		let { currentUser } = this.props;
-		let mainContent = {
-			address: currentUser.address || "",
-			email: currentUser.email || "",
-			phoneNumber: currentUser.phoneNumber || "",
-			name: currentUser.displayName || "",
-			dob: currentUser.dob || new Date(),
-		};
+		const { currentResume } = this.props;
+		const mainContent = this.generateDoc(
+			currentResume.mainContent,
+			"mainContent"
+		);
 		this.setState({ mainContent });
+		const social = this.generateDoc(currentResume.social, "social");
+		this.setState({ social });
+	}
+	generateDoc(data, dataType) {
+		return dataType === "mainContent"
+			? {
+					address: data.address || "",
+					email: data.email || "",
+					phoneNumber: data.phoneNumber || "",
+					name: data.name || "",
+					dob: data.dob || new Date(),
+					desc: data.desc || "",
+					tag: data.tag || "",
+			  }
+			: {
+					website: data.website || "",
+					linkedIn: data.linkedIn || "",
+					twitter: data.twitter || "",
+					facebook: data.facebook || "",
+					quora: data.quora || "",
+					instagram: data.instagram || "",
+					stackOverFlow: data.stackOverFlow || "",
+					github: data.github || "",
+			  };
 	}
 	schema = {
 		mainContent: {
@@ -84,11 +105,23 @@ class AccountForm extends Form {
 			github: Joi.string().allow("").uri(),
 		},
 	};
+
 	doSubmit = async (type) => {
 		// firebase.writeToUs(this.state.mainContent);
 		console.log("Content", this.state[type]);
 		console.log("Error", this.state.errors);
-		this.setState({ notification: true });
+		writeResume(
+			{ [type]: this.state[type] },
+			this.props.currentUser.uid,
+			this.props.currentUser.resumeId
+		)
+			.then((data) => {
+				console.log(data);
+				this.setState({ notification: true });
+			})
+			.catch((err) => {
+				console.log(err);
+			});
 	};
 	handleDateChange = (date) => {
 		const mainContent = { ...this.state.mainContent };
@@ -150,7 +183,7 @@ class AccountForm extends Form {
 							placeholder="website.com"
 							name="website"
 							label="Website"
-							icon={<i className="fas fa-globe text-muted" />}
+							icon={<i className="fas fa-globe" />}
 						></InputField>
 					</div>
 					<div className="col-md-6 my-2">
@@ -162,7 +195,12 @@ class AccountForm extends Form {
 							placeholder="LinkedIn"
 							name="linkedIn"
 							label="LinkedIn"
-							icon={<i className="fab fa-linkedin-in text-muted" />}
+							icon={
+								<i
+									style={{ color: "#0082ca" }}
+									className="fab fa-linkedin-in "
+								/>
+							}
 						></InputField>
 					</div>
 					<div className="col-md-6 my-2">
@@ -174,7 +212,7 @@ class AccountForm extends Form {
 							placeholder="Twitter"
 							name="twitter"
 							label="Twitter"
-							icon={<i className="fab fa-twitter text-muted" />}
+							icon={<i className="fab fa-twitter text-info" />}
 						></InputField>
 					</div>
 					<div className="col-md-6 my-2">
@@ -186,7 +224,9 @@ class AccountForm extends Form {
 							placeholder="Quora"
 							name="quora"
 							label="Quora"
-							icon={<i className="fab fa-quora text-muted" />}
+							icon={
+								<i style={{ color: "#ed302f" }} className="fab fa-quora " />
+							}
 						></InputField>
 					</div>
 					<div className="col-md-6 my-2">
@@ -198,7 +238,7 @@ class AccountForm extends Form {
 							placeholder="Facebook"
 							name="facebook"
 							label="Facebook"
-							icon={<i className="fab fa-facebook-f text-muted" />}
+							icon={<i className="fab fa-facebook-f text-primary" />}
 						></InputField>
 					</div>
 					<div className="col-md-6 my-2">
@@ -210,7 +250,7 @@ class AccountForm extends Form {
 							placeholder="Instagram"
 							name="instagram"
 							label="Instagram"
-							icon={<i className="fab fa-instagram text-muted" />}
+							icon={<i className="fab fa-instagram text-danger" />}
 						></InputField>
 					</div>
 					<div className="col-md-6 my-2">
@@ -222,7 +262,7 @@ class AccountForm extends Form {
 							placeholder="Github"
 							name="github"
 							label="Github"
-							icon={<i className="fab fa-github text-muted" />}
+							icon={<i className="fab fa-github" />}
 						></InputField>
 					</div>
 					<div className="col-md-6 my-2">
@@ -234,7 +274,7 @@ class AccountForm extends Form {
 							placeholder="StackOverFlow"
 							name="stackOverFlow"
 							label="StackOverFlow"
-							icon={<i className="fab fa-stack-overflow text-muted" />}
+							icon={<i className="fab fa-stack-overflow" />}
 						></InputField>
 					</div>
 				</div>
