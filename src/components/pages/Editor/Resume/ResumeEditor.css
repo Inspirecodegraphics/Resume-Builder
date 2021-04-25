@@ -10,7 +10,13 @@
 .rb-editor-page {
 	width: 210mm;
 	height: 297mm;
+	/* overflow: hidden; */
 	background-color: white;
+}
+.rb-editor-page p {
+	font-size: small;
+	font-weight: 400;
+	line-height: normal;
 }
 .rb-editor-setting {
 	position: fixed;
@@ -31,7 +37,59 @@
 	background-color: #313b47 !important;
 	height: 2px !important;
 	opacity: 1;
+	margin: 0.5rem 0;
 }
 .list-group-item {
 	border: none;
+}
+.rb-icon-circle {
+	display: flex;
+	border-radius: 50%;
+	border: 1px solid #414243;
+	width: 25px;
+	height: 25px;
+	align-items: center;
+	justify-content: center;
+}
+.rb-icon-circle i {
+	font-size: 14px;
+}
+.desc-list {
+	padding-left: 1rem;
+	font-size: small;
+	list-style-type: "🤯";
+}
+
+.desc-list li {
+	line-height: normal;
+}
+.desc-list li::marker {
+	font-size: 10px;
+}
+.education h6,
+.experience h6 {
+	font-size: unset;
+}
+
+.contact {
+	font-size: small;
+}
+.rb-desc {
+	text-indent: 5ch;
+	text-align: justify;
+	line-height: 1.2;
+	font-size: 11.5px !important;
+	overflow: hidden;
+	font-weight: 500 !important;
+}
+.eclips {
+	white-space: nowrap;
+	overflow: hidden;
+	/* text-overflow: ellipsis; */
+}
+.Elink {
+	font-size: xx-small !important;
+}
+.border-left {
+	border-left: 3px solid black;
 }

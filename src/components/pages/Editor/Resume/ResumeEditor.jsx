@@ -1,6 +1,5 @@
 import React, { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
-
 // Material UI Core
 import TextField from "@material-ui/core/TextField";
 import { makeStyles } from "@material-ui/core/styles";
@@ -9,40 +8,25 @@ import { makeStyles } from "@material-ui/core/styles";
 import { ReactComponent as Layout } from "../../../../static/icon/layout.svg";
 import { ReactComponent as Theme } from "../../../../static/icon/theme.svg";
 import { ReactComponent as Settings } from "../../../../static/icon/settings.svg";
-
+import { ReactComponent as Background1 } from "../../../../static/background/background1.svg";
 import FontSelect from "./FontSelect";
-import Header from "./Header";
-import "./ResumeEditor.css";
 
 import { useAuth } from "../../../../Providers/AuthProvider";
+
+import Layout1 from "../Style/Layout1";
+import "./ResumeEditor.css";
+import Layout2 from "./../Style/Layout2";
 
 const ResumeEditor = (props) => {
 	const id = props.match.params.id;
 	const [selectedFont, setSelectedFont] = useState("Roboto");
 	const fonts = ["Merriweather", "Raleway", "Ubuntu", "Roboto", "Kiwi Maru"];
-	const [resume, setResume] = useState({});
 	const { currentUser, currentResume } = useAuth();
 
-	useEffect(() => {
-		// async function fetchResume() {
-		// 	console.log("Firebase Called");
-		// 	try {
-		// 		db.doc(`users/${currentUser.uid}/resumes/${"1"}`).onSnapshot((doc) => {
-		// 			console.log("Current data: ", doc.data());
-		// 			setResume(doc.data());
-		// 		});
-		// 	} catch (error) {
-		// 		console.error("Error fetching Document", error);
-		// 	}
-		// 	// const resume = await getResumes();
-		// 	// console.log(resume);
-		// 	// setResume(resume);
-		// }
-		// fetchResume();
-	}, []);
+	useEffect(() => {}, []);
 
 	return (
-		<section className="rb-editor">
+		<section className="rb-editor ice-theme">
 			<div className="container-fluid">
 				<div className="rb-editor-container-fluid py-5">
 					<div
@@ -50,18 +34,19 @@ const ResumeEditor = (props) => {
 						className="row d-flex justify-content-center"
 					>
 						<div className="rb-editor-container">
-							<p>Resume</p>
 							<form noValidate autoComplete="off">
 								<TextField value="Resume" id="standard-basic" />
 							</form>
-							<Header></Header>
-							{/* <h1>{currentResume && currentResume.mainContent.email}</h1> */}
+							<div className="rb-editor-page text-dark" id="editor">
+								{/* <Layout1></Layout1> */}
+								<Layout2></Layout2>
+							</div>
 						</div>
 					</div>
 				</div>
 			</div>
 
-			<div className="w-100 d-flex justify-content-center">
+			{/* <div className="w-100 d-flex justify-content-center">
 				<div className="row rb-editor-setting">
 					<div className="col-3 p-2">
 						<FontSelect
@@ -85,7 +70,7 @@ const ResumeEditor = (props) => {
 						</p>
 					</div>
 				</div>
-			</div>
+			</div> */}
 		</section>
 	);
 };

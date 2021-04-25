@@ -139,4 +139,15 @@
 			}
 		}
 	}
+	.rb-editor-page {
+		background-color: $primary-highlight-color;
+		color: $border-color !important;
+		a {
+			color: $border-color !important;
+		}
+		button {
+			color: $primary-highlight-color !important;
+			background-color: $border-color !important;
+		}
+	}
 }

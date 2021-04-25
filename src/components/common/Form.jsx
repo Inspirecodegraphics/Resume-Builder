@@ -2,10 +2,10 @@ import React, { Component } from "react";
 import Joi from "joi-browser";
 
 class Form extends Component {
-	state = { mainContent: {}, errors: {} };
+	state = { data: {}, errors: {} };
 
 	validate = () => {
-		const result = Joi.validate(this.state.mainContent, this.schema, {
+		const result = Joi.validate(this.state.data, this.schema, {
 			abortEarly: false,
 		});
 		if (!result.error) return null;
@@ -31,9 +31,9 @@ class Form extends Component {
 		if (errorMsg) errors[input.name] = errorMsg;
 		else delete errors[input.name];
 
-		const mainContent = { ...this.state.mainContent };
-		mainContent[input.name] = input.value;
-		this.setState({ mainContent, errors });
+		const data = { ...this.state.data };
+		data[input.name] = input.value;
+		this.setState({ data, errors });
 	};
 
 	handleSubmit = (e) => {

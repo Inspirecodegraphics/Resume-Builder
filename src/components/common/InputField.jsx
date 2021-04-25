@@ -10,6 +10,7 @@ const InputField = ({
 	icon,
 	placeholder,
 	name,
+	id,
 	label,
 	...rest
 }) => {
@@ -17,7 +18,7 @@ const InputField = ({
 		<TextField
 			error={error}
 			placeholder={placeholder}
-			id={name}
+			id={id || name}
 			label={label}
 			{...rest}
 			type={type}
@@ -28,11 +29,13 @@ const InputField = ({
 			variant="standard"
 			color="primary"
 			helperText={error}
-			InputProps={{
-				startAdornment: (
-					<InputAdornment position="start">{icon}</InputAdornment>
-				),
-			}}
+			InputProps={
+				icon && {
+					startAdornment: (
+						<InputAdornment position="start">{icon}</InputAdornment>
+					),
+				}
+			}
 		></TextField>
 	);
 };

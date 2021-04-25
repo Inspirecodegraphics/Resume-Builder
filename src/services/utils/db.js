@@ -1,9 +1,8 @@
 import { firestore as db } from "../firebase";
 import { auth } from "./../firebase";
 
-const user = auth().currentUser;
-
 export const getResumes = async () => {
+	const user = auth().currentUser;
 	try {
 		let resume = {};
 		db.doc(`users/${user.uid}/resumes/${"1"}`).onSnapshot((doc) => {
