@@ -64,7 +64,16 @@ class PersonalProject extends Form {
 	generateDoc(data) {
 		return {
 			label: data.label || "PROJECTS",
-			project: data.project || [],
+			// project: data.project || [],
+			project: data.project.map((pro) => {
+				if (Boolean(pro.startDate.seconds)) {
+					pro.startDate = pro.startDate.toDate();
+				}
+				if (Boolean(pro.endDate.seconds)) {
+					pro.endDate = pro.endDate.toDate();
+				}
+				return pro;
+			}),
 		};
 	}
 
@@ -72,7 +81,7 @@ class PersonalProject extends Form {
 		label: Joi.string().label("Label"),
 		project: {
 			id: Joi.number(),
-			name: Joi.string().required().label("Project Name"),
+			name: Joi.string().required().max(50).label("Project Name"),
 			institution: Joi.string().allow("").max(50).label("Institution/Place"),
 			desc: Joi.string().allow("").max(100),
 			externalLink: Joi.string().allow(""),

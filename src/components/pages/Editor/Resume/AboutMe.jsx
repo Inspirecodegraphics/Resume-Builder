@@ -8,14 +8,17 @@ const AboutMe = () => {
 
 	const about = () => {
 		return (
-			<div className="pb-2 about">
-				<h6 className="d-flex align-items-center">
+			<div className="pb-2">
+				<h6 className="d-flex align-items-center mb-1">
 					<div className="rb-icon-circle">
 						<i className="fas fa-user"></i>
 					</div>
-					<b className="ps-2">{currentResume.about.label}</b>
+					<b className="ps-2 about">{currentResume.about.label}</b>
 				</h6>
-				<p style={{ height: "95px" }} className="rb-desc m-0">
+				<p
+					// style={{ height: "95px" }}
+					className="rb-desc m-0 about"
+				>
 					{currentResume.about.about}
 				</p>
 			</div>
@@ -28,10 +31,10 @@ const AboutMe = () => {
 					<div className="rb-icon-circle">
 						<i className="fas fa-user"></i>
 					</div>
-					<b className="ps-2">ABOUT ME</b>
+					<b className="ps-2 about">ABOUT ME</b>
 				</h6>
 				<b>
-					<p className="my-1">Description</p>
+					<p className="my-1 about">Description</p>
 					<Skeleton animation="wave" variant="text" />
 					<Skeleton animation="wave" variant="text" />
 				</b>

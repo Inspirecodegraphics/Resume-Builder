@@ -58,7 +58,7 @@ function Footer() {
 				</div>
 				<div className="container my-5">
 					<div className="row">
-						<div className="col-md-3">
+						<div className="col-md-3 col-sm-6 col-12">
 							<h6>Inspire Resume</h6>
 							<hr
 								className="text-danger mx-auto d-inline-block mb-4 mt-0"
@@ -70,7 +70,7 @@ function Footer() {
 								for creating Resumes, with clean & maintainable Design.
 							</p>
 						</div>
-						<div className="col-md-3">
+						<div className="col-md-3 col-sm-6 col-12">
 							<h6>Products</h6>
 							<hr
 								className="text-danger mx-auto d-inline-block mb-4 mt-0"
@@ -104,7 +104,7 @@ function Footer() {
 								</Link>
 							</p>
 						</div>
-						<div className="col-md-3">
+						<div className="col-md-3 col-sm-6 col-12">
 							<h6>Useful links</h6>
 							<hr
 								className="text-danger mx-auto d-inline-block mb-4 mt-0"
@@ -130,7 +130,7 @@ function Footer() {
 								</a>
 							</p>
 						</div>
-						<div className="col-md-3">
+						<div className="col-md-3 col-sm-6 col-12">
 							<h6>Contact</h6>
 							<hr
 								className="text-danger mx-auto d-inline-block mb-4 mt-0"

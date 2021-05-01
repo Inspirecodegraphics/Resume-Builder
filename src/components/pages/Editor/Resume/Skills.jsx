@@ -21,21 +21,21 @@ const Skills = () => {
 	const { currentResume } = useAuth();
 	const skill = () => {
 		return (
-			<div className="pb-3 skill">
-				<h6 className="d-flex align-items-center">
+			<div className="pb-3">
+				<h6 className="d-flex align-items-center mb-1">
 					<div className="rb-icon-circle">
 						<i
 							className="fas fa-pen-nib"
 							style={{ transform: "rotate(135deg)" }}
 						></i>
 					</div>
-					<b className="ps-2">{currentResume.skill.label}</b>
+					<b className="ps-2 skill">{currentResume.skill.label}</b>
 				</h6>
 				<div>
 					{currentResume.skill.skill.map((skill, index) => (
 						<Button
 							key={index}
-							className={classes.root + " skill-btn"}
+							className={classes.root + " skill"}
 							size="small"
 						>
 							{skill.name.toUpperCase()}
@@ -48,17 +48,17 @@ const Skills = () => {
 	const empty = () => {
 		return (
 			<div className="py-3">
-				<h6 className="d-flex align-items-center">
+				<h6 className="d-flex align-items-center skill">
 					<div className="rb-icon-circle">
 						<i
 							className="fas fa-pen-nib"
 							style={{ transform: "rotate(135deg)" }}
 						></i>
 					</div>
-					<b className="ps-2">SKILLS</b>
+					<b className="ps-2 skill">SKILLS</b>
 				</h6>
 				<b>
-					<p className="my-1">Skill</p>
+					<p className="my-1 skill">Skill</p>
 				</b>
 			</div>
 		);

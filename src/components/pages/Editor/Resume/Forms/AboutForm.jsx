@@ -27,7 +27,7 @@ class AboutForm extends Form {
 	};
 	schema = {
 		label: Joi.string().label("Label"),
-		about: Joi.string().allow("").max(650).label("About me"),
+		about: Joi.string().allow("").max(625).label("About me"),
 	};
 	componentDidMount() {
 		const { currentUser, currentResume } = this.context;

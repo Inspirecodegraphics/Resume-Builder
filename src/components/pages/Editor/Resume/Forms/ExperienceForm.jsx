@@ -62,7 +62,16 @@ class ExperienceForm extends Form {
 	generateDoc(data) {
 		return {
 			label: data.label || "WORK EXPERIENCE",
-			experience: data.experience || [],
+			// experience: data.experience || [],
+			experience: data.experience.map((exp) => {
+				if (Boolean(exp.startDate.seconds)) {
+					exp.startDate = exp.startDate.toDate();
+				}
+				if (Boolean(exp.endDate.seconds)) {
+					exp.endDate = exp.endDate.toDate();
+				}
+				return exp;
+			}),
 		};
 	}
 
@@ -70,13 +79,13 @@ class ExperienceForm extends Form {
 		label: Joi.string().label("Label"),
 		experience: {
 			id: Joi.number(),
-			title: Joi.string().required().label("Title/Position"),
-			company: Joi.string().required().label("Workplace/Company"),
-			desc: Joi.string().allow(""),
-			address: Joi.string().allow(""),
+			title: Joi.string().required().max(30).label("Title/Position"),
+			company: Joi.string().required().max(25).label("Workplace/Company"),
+			desc: Joi.string().max(225).allow(""),
+			address: Joi.string().max(20).allow(""),
 			startDate: Joi.date().label("Start Date"),
 			endDate: Joi.date().label("End Date"),
-			task: Joi.string().allow(""),
+			task: Joi.string().max(50).allow(""),
 			present: Joi.boolean(),
 		},
 	};

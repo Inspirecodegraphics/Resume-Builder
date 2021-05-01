@@ -6,7 +6,7 @@ const Achievements = () => {
 			<h5>
 				ACHIEVEMENTS <i class="fas fa-check"></i>
 			</h5>
-			<p className="my-1">Achievement Name</p>
+			<p className="my-1 achievement">Achievement Name</p>
 		</div>
 	);
 };

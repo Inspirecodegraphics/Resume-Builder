@@ -4,7 +4,7 @@
 }
 .avtar-outer {
 	border-radius: 50%;
-	padding: 11px;
+	padding: 12px;
 	border: 5px solid #8bd3cf;
 }
 .avtar-outer .avtar {
@@ -15,4 +15,44 @@
 }
 .border-left {
 	border-left: 3px solid #8bd3cf;
+	padding-left: 3px;
+}
+.avtar-row {
+	position: relative;
+	display: flex;
+	align-items: center;
+}
+.avtar-col.col-2 {
+	position: absolute;
+	left: 55px;
+}
+.avtar-col.col-11 {
+	z-index: 1;
+	height: 145px;
+	padding-left: 95px !important;
+	display: flex;
+	align-items: center;
+}
+h2.mainContent {
+	font-size: 28px;
+}
+.circular {
+	display: flex;
+	justify-content: center;
+	align-items: center;
+}
+.top-line {
+	width: 210mm;
+	position: absolute;
+	display: table;
+	padding-top: 0.35rem;
+}
+.top-line hr {
+	height: 4px;
+	opacity: 1;
+	margin-top: 0.25rem;
+}
+.top-line .text {
+	margin-bottom: 0;
+	text-transform: uppercase;
 }

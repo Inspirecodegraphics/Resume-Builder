@@ -41,7 +41,12 @@ function App() {
 			});
 	};
 	useEffect(() => {
-		window.addEventListener("load", oneTapSignIn(handleOneTapSignIn));
+		const el = document.createElement("script");
+		el.setAttribute("src", "https://accounts.google.com/gsi/client");
+		el.onload = () => oneTapSignIn(handleOneTapSignIn);
+		el.async = true;
+		el.defer = true;
+		document.querySelector("body").appendChild(el);
 	}, []);
 	const classes = useStyles();
 	return (

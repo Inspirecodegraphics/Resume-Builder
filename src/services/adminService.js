@@ -1,3 +1,42 @@
+const month = [
+	"January",
+	"February",
+	"March",
+	"April",
+	"May",
+	"June",
+	"July",
+	"August",
+	"September",
+	"October",
+	"November",
+	"December",
+];
+const monthShort = [
+	"Jan",
+	"Feb",
+	"Mar",
+	"Apr",
+	"May",
+	"Jun",
+	"Jul",
+	"Aug",
+	"Sep",
+	"Oct",
+	"Nov",
+	"Dec",
+];
+let days = [
+	"Sunday",
+	"Monday",
+	"Tuesday",
+	"Wednesday",
+	"Thursday",
+	"Friday",
+	"Saturday",
+];
+let daysShort = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+
 const features = [
 	{
 		col: [
@@ -54,8 +93,39 @@ const features = [
 	},
 ];
 
+function formatDate(date, views) {
+	const result = {};
+	views.forEach((ele) => {
+		if (typeof ele === "object") {
+			Object.keys(ele).forEach((key) => {
+				if (key === "month") {
+					result[key] = getMonthName(date.getMonth(), ele[key]);
+				}
+				if (key === "day") {
+					result[key] = getDaysName(date.getDay(), ele[key]);
+				}
+			});
+		}
+		if (ele === "year") {
+			result[ele] = date.getFullYear();
+		}
+		if (ele === "month") {
+			result[ele] = getMonthName(date.getMonth());
+		}
+		if (ele === "day") {
+			result[ele] = getDaysName(date.getDay());
+		}
+	});
+	return result;
+}
+function getMonthName(index, type) {
+	return type === "short" ? monthShort[index] : month[index];
+}
+function getDaysName(index, type) {
+	return type === "short" ? daysShort[index] : days[index];
+}
+
 export default function getFeatures() {
 	return features;
 }
-
-export { getFeatures };
+export { formatDate, getFeatures };

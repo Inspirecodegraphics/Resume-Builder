@@ -1,132 +1,98 @@
 import React from "react";
 import Joi from "joi-browser";
+import _ from "lodash";
 import "date-fns";
-import DateFnsUtils from "@date-io/date-fns";
-import { MuiPickersUtilsProvider, DatePicker } from "@material-ui/pickers";
+// Material UI Labs
+import Rating from "@material-ui/lab/Rating";
 
 // Material UI Core
 import IconButton from "@material-ui/core/IconButton";
 import Snackbar from "@material-ui/core/Snackbar";
 import DialogActions from "@material-ui/core/DialogActions";
 import Button from "@material-ui/core/Button";
-import Accordion from "@material-ui/core/Accordion";
-import AccordionSummary from "@material-ui/core/AccordionSummary";
-import AccordionDetails from "@material-ui/core/AccordionDetails";
-import Checkbox from "@material-ui/core/Checkbox";
-import Icon from "@material-ui/core/Icon";
-import Tooltip from "@material-ui/core/Tooltip";
-import InputAdornment from "@material-ui/core/InputAdornment";
+import TextField from "@material-ui/core/TextField";
+import Chip from "@material-ui/core/Chip";
 
 // Material UI Icons
 import CloseIcon from "@material-ui/icons/Close";
 import CheckIcon from "@material-ui/icons/Check";
-
-import ExpandMoreIcon from "@material-ui/icons/ExpandMore";
+import DoneIcon from "@material-ui/icons/Done";
 import Form from "../../../../common/ExperienceFormBase";
 import InputField from "../../../../common/InputField";
-// import firebase from "../../../services/firebase";
 import { writeResume } from "../../../../../services/utils/db";
-import Typography from "@material-ui/core/Typography";
+
+import { AuthContext } from "../../../../../Providers/AuthProvider";
 
 class TechnicalSkillsForm extends Form {
+	static contextType = AuthContext;
+
 	state = {
 		mainContent: {
 			label: "TECHNICAL SKILLS",
-			skills: [
-				{
-					id: 1,
-					name: "",
-					desc: "",
-				},
-			],
+			tech: [],
 		},
-
+		technology: [],
+		searchQuery: "",
 		errors: {},
+		currentUser: {},
 		notification: false,
 	};
-	componentDidMount() {
-		// const { currentResume } = this.props;
-		// const mainContent = this.generateDoc(
-		// 	currentResume.mainContent,
-		// 	"mainContent"
-		// );
-		// this.setState({ mainContent });
-		// const social = this.generateDoc(currentResume.social, "social");
-		// this.setState({ social });
-		// this.handleExperienceError();
+	async componentDidMount() {
+		const { technology } = this.props;
+		const { currentUser, currentResume } = this.context;
+		let data = { ...this.state };
+		if (currentResume.technicalSkills) {
+			data.mainContent = this.generateDoc(currentResume.technicalSkills);
+		}
+		data.currentUser = currentUser;
+		data.technology = technology;
+		console.log(data);
+		this.setState(data);
 	}
-	// generateDoc(data, dataType) {
-	// 	return dataType === "mainContent"
-	// 		? {
-	// 				address: data.address || "",
-	// 				email: data.email || "",
-	// 				phoneNumber: data.phoneNumber || "",
-	// 				name: data.name || "",
-	// 				dob: data.dob || new Date(),
-	// 				desc: data.desc || "",
-	// 				tag: data.tag || "",
-	// 		  }
-	// 		: {
-	// 				website: data.website || "",
-	// 				linkedIn: data.linkedIn || "",
-	// 				twitter: data.twitter || "",
-	// 				facebook: data.facebook || "",
-	// 				quora: data.quora || "",
-	// 				instagram: data.instagram || "",
-	// 				stackOverFlow: data.stackOverFlow || "",
-	// 				github: data.github || "",
-	// 		  };
-	// }
+	generateDoc(data) {
+		return {
+			label: data.label || "TECHNICAL SKILLS",
+			tech: data.tech || [],
+		};
+	}
 
 	schema = {
+		searchQuery: Joi.string().allow("").label("Search"),
 		label: Joi.string().label("Label"),
-		skills: {
-			id: Joi.number(),
-			name: Joi.string().required().label("Group Name"),
-			desc: Joi.string().required().label("Description"),
-		},
+		tech: Joi.array(),
 	};
 
-	doSubmit = async (type) => {
-		console.log("Content", this.state.mainContent);
-		console.log("Error", this.state.errors);
-		// writeResume(
-		// 	{ [type]: this.state[type] },
-		// 	this.props.currentUser.uid,
-		// 	this.props.currentUser.resumeId
-		// )
-		// 	.then((data) => {
-		// 		console.log(data);
-		// 		this.setState({ notification: true });
-		//    this.props.handleClose()
-		// 	})
-		// 	.catch((err) => {
-		// 		console.log(err);
-		// 	});
-	};
-
-	move = (array, element, delta) => {
-		var index = array.indexOf(element);
-		var newIndex = index + delta;
-		if (newIndex < 0 || newIndex === array.length) return; //Already at the top or bottom.
-		var indexes = [index, newIndex].sort((a, b) => a - b); //Sort the indixes (fixed)
-		array.splice(indexes[0], 2, array[indexes[1]], array[indexes[0]]); //Replace from lowest index, two elements, reverting the order
-	};
-
-	handleAddMore = (type) => {
-		const errors = this.validate(type);
-		if (Object.keys(errors).length > 0) {
-			this.setState({ errors });
-		} else {
-			const mainContent = { ...this.state.mainContent };
-			const skills = {
-				id: this.state.mainContent.skills.length + 1,
-				name: "",
-				desc: "",
-			};
-			mainContent.skills.push(skills);
-			this.setState({ mainContent });
+	handleSubmit = () => (e) => {
+		e.preventDefault();
+		const errors = this.validate("label");
+		this.setState({ errors: errors || {} });
+		if (errors) {
+			console.log(errors);
+			return;
 		}
+		this.doSubmit();
+	};
+	doSubmit = async (type) => {
+		const { mainContent, currentUser } = this.state;
+		writeResume(
+			{
+				technicalSkills: mainContent,
+			},
+			currentUser.uid,
+			currentUser.resumeId
+		)
+			.then((data) => {
+				this.setState({ notification: true });
+			})
+			.catch((err) => {
+				console.log(err);
+			});
+	};
+	handleRatingChange = (value, label, type) => {
+		const mainContent = { ...this.state.mainContent };
+		let target = mainContent[type].find((e) => e.label === label);
+		target.value = value;
+		this.setState({ mainContent });
 	};
 
 	handleNotificationClose = (event, reason) => {
@@ -135,6 +101,38 @@ class TechnicalSkillsForm extends Form {
 		}
 		this.setState({ notification: false });
 	};
+	handleSearch = (query) => {
+		this.setState({ searchQuery: query });
+	};
+	handleAddChip = (tech) => {
+		let mainContent = { ...this.state.mainContent };
+		if (mainContent.tech.find((t) => t.label === tech.label)) {
+			console.log("Already Added");
+			return;
+		}
+		tech.value = 5;
+		mainContent.tech.push(tech);
+		this.setState({ mainContent, searchQuery: "" });
+	};
+	handleDeleteChip = (tech) => {
+		let mainContent = { ...this.state.mainContent };
+		mainContent.tech = mainContent.tech.filter(
+			(chip) => chip.label !== tech.label
+		);
+
+		this.setState({ mainContent });
+	};
+	getPageData = () => {
+		const { technology: allTech, searchQuery } = this.state;
+		let filtered = [];
+		if (searchQuery)
+			filtered = allTech.filter((t) =>
+				t.label.toLowerCase().startsWith(searchQuery.toLowerCase())
+			);
+		const finalTech = _.orderBy(filtered, "label", "asc");
+		return { totalCount: filtered.length, finalTech };
+	};
+
 	render() {
 		const { notification } = this.state;
 
@@ -171,9 +169,9 @@ class TechnicalSkillsForm extends Form {
 
 	skills() {
 		const { mainContent, errors } = this.state;
-
+		const { totalCount, finalTech } = this.getPageData();
 		return (
-			<form onSubmit={this.handleSubmit("skills")}>
+			<form onSubmit={this.handleSubmit()}>
 				<div className="row mb-2">
 					<div className="col-md-12 my-2">
 						<InputField
@@ -187,77 +185,101 @@ class TechnicalSkillsForm extends Form {
 							icon={<i className="fas fa-tags text-muted" />}
 						></InputField>
 					</div>
-					{mainContent.skills.map((skills, index) => (
-						<Accordion
-							TransitionProps={{ unmountOnExit: true }}
-							elevation={0}
-							key={index}
-							className="my-2"
-						>
-							<AccordionSummary
-								expandIcon={<ExpandMoreIcon />}
-								aria-controls="mainContent"
-								id="mainContent-header"
-							>
-								{mainContent.label} - {skills.id}
-							</AccordionSummary>
-							<AccordionDetails>
-								<div className="row">
-									<div className="col-md-12 my-2">
-										<InputField
-											handleChange={this.handleChange("skills")}
-											error={errors["name" + skills.id]}
-											value={skills.name}
-											type="text"
-											id={`name${skills.id}`}
-											placeholder="Group Name"
-											name="name"
-											label="Group Name"
-										></InputField>
-									</div>
-
-									<div className="col-md-12 my-2">
-										<Tooltip
-											placement="bottom"
-											title={`Use " , " comma for separate multiple values.`}
-											arrow
-										>
-											<InputField
-												handleChange={this.handleChange("skills")}
-												error={errors["desc" + skills.id]}
-												value={skills.desc}
-												type="text"
-												id={`desc${skills.id}`}
-												placeholder="List of Technical Skills"
-												name="desc"
-												rows={3}
-												multiline
-												label="Description"
-											></InputField>
-										</Tooltip>
-									</div>
+					{mainContent.tech.length > 0 && (
+						<div className="col">
+							<div className="row">
+								<div className="col-md-5">
+									<p className="mb-0">Technical Skill</p>
 								</div>
-							</AccordionDetails>
-						</Accordion>
-					))}
-
-					<div className="col-12">
-						<div className="row px-3">
-							<div className="col-11 px-0 d-flex align-items-center">
-								<hr className="w-100" />
-							</div>
-							<div className="col-1 px-0">
-								<Tooltip placement="bottom" title="Add More" arrow>
-									<IconButton
-										onClick={() => this.handleAddMore("skills")}
-										aria-label="add more"
-									>
-										<Icon color="secondary">add_circle</Icon>
-									</IconButton>
-								</Tooltip>
+								<div className="col-md-7">
+									<p className="mb-0">Proficiency</p>
+								</div>
 							</div>
 						</div>
+					)}
+					<div style={{ maxHeight: "200px", overflow: "auto" }}>
+						{mainContent.tech.map((tech, index) => (
+							<div className="row" key={index}>
+								<div className="col-md-5">
+									<Chip
+										key={tech.label}
+										label={tech.label}
+										color="secondary"
+										variant="outlined"
+										icon={
+											<div className="ms-2">
+												<i
+													style={{ fontSize: "initial" }}
+													className={tech.icon}
+												></i>
+											</div>
+										}
+										onDelete={() => this.handleDeleteChip(tech)}
+										className="m-1"
+									/>
+								</div>
+								<div className="col-md-7 my-2 d-flex align-items-center">
+									<Rating
+										id={`value${tech.label}`}
+										name={`value${tech.label}`}
+										value={tech.value}
+										precision={1}
+										onChange={(event, value) => {
+											this.handleRatingChange(value, tech.label, "tech");
+										}}
+										icon={
+											<i
+												class="fas fa-square px-1"
+												style={{ fontSize: "smaller" }}
+											></i>
+										}
+										max={10}
+									/>
+								</div>
+							</div>
+						))}
 					</div>
+
+					<div className="col-md-12 my-2">
+						<TextField
+							error={errors.searchQuery}
+							placeholder="Search"
+							id="searchQuery"
+							label="Search Technology"
+							type="text"
+							fullWidth
+							autoFocus
+							name="searchQuery"
+							value={this.state.searchQuery}
+							onChange={(e) => this.handleSearch(e.currentTarget.value)}
+							variant="standard"
+							color="primary"
+							helperText={errors.searchQuery}
+						></TextField>
+					</div>
+					{totalCount > 0 && (
+						<div className="col-md-12 my-2">
+							{finalTech.map((tech, index) => (
+								<Chip
+									key={tech.label + index}
+									label={tech.label}
+									color="secondary"
+									icon={
+										<div className="ms-2">
+											<i
+												style={{ fontSize: "initial" }}
+												className={tech.icon}
+											></i>
+										</div>
+									}
+									variant="outlined"
+									onDelete={() => this.handleAddChip(tech)}
+									deleteIcon={<DoneIcon />}
+									className="m-1"
+								/>
+							))}
+						</div>
+					)}
 				</div>
 				<DialogActions>
 					<Button onClick={this.props.handleClose} color="primary">

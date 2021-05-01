@@ -63,7 +63,13 @@ class AwardHonorForm extends Form {
 	generateDoc(data) {
 		return {
 			label: data.label || "CERTIFICATES",
-			award: data.award || [],
+			// award: data.award || [],
+			award: data.award.map((award) => {
+				if (Boolean(award.awardDate.seconds)) {
+					award.awardDate = award.awardDate.toDate();
+				}
+				return award;
+			}),
 		};
 	}
 

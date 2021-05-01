@@ -16,37 +16,51 @@ import { useAuth } from "../../../../Providers/AuthProvider";
 import Layout1 from "../Style/Layout1";
 import "./ResumeEditor.css";
 import Layout2 from "./../Style/Layout2";
+import AccountDailog from "./AccountSettingDialog";
+import { AccountSetting } from "./../../../../Context/AccountSettingContext";
+import { getTechnologies } from "../../../../services/utils/db";
 
 const ResumeEditor = (props) => {
 	const id = props.match.params.id;
 	const [selectedFont, setSelectedFont] = useState("Roboto");
 	const fonts = ["Merriweather", "Raleway", "Ubuntu", "Roboto", "Kiwi Maru"];
+	const [tech, setTech] = useState([]);
 	const { currentUser, currentResume } = useAuth();
 
-	useEffect(() => {}, []);
+	useEffect(() => {
+		async function getTech() {
+			const technology = await getTechnologies();
+			setTech(technology.tech);
+		}
+		getTech();
+	}, []);
 
 	return (
-		<section className="rb-editor ice-theme">
-			<div className="container-fluid">
-				<div className="rb-editor-container-fluid py-5">
-					<div
-						style={{ fontFamily: `${selectedFont}, sans-serif` }}
-						className="row d-flex justify-content-center"
-					>
-						<div className="rb-editor-container">
-							<form noValidate autoComplete="off">
-								<TextField value="Resume" id="standard-basic" />
-							</form>
-							<div className="rb-editor-page text-dark" id="editor">
-								{/* <Layout1></Layout1> */}
-								<Layout2></Layout2>
+		<AccountSetting.Provider
+		// value={{ dailogOpen, setDailogOpen, index, setIndex }}
+		>
+			<section className="rb-editor ice-theme">
+				<div className="container-fluid">
+					<div className="rb-editor-container-fluid py-5">
+						<div
+							style={{ fontFamily: `${selectedFont}, sans-serif` }}
+							className="row d-flex justify-content-center"
+						>
+							<div className="rb-editor-container">
+								<form noValidate autoComplete="off">
+									<TextField value="Resume" id="standard-basic" />
+								</form>
+								<div className="rb-editor-page text-dark" id="editor">
+									{/* <Layout1></Layout1> */}
+									<Layout2></Layout2>
+								</div>
+								{/* <MultipleSelect></MultipleSelect> */}
 							</div>
 						</div>
 					</div>
 				</div>
-			</div>
-
-			{/* <div className="w-100 d-flex justify-content-center">
+				<AccountDailog technology={tech}></AccountDailog>
+				{/* <div className="w-100 d-flex justify-content-center">
 				<div className="row rb-editor-setting">
 					<div className="col-3 p-2">
 						<FontSelect
@@ -71,7 +85,8 @@ const ResumeEditor = (props) => {
 					</div>
 				</div>
 			</div> */}
-		</section>
+			</section>
+		</AccountSetting.Provider>
 	);
 };
 

@@ -30,11 +30,11 @@ const Contact = () => {
 	const contact = () => {
 		return (
 			<div className="py-2 contact">
-				<h6 className="d-flex align-items-center">
+				<h6 className="d-flex align-items-center mb-1">
 					<div className="rb-icon-circle">
 						<i className="fas fa-address-book"></i>
 					</div>
-					<b className="ps-2">CONTACT</b>
+					<b className="ps-2 mainContent">CONTACT</b>
 				</h6>
 				{mainContent.map((content) => {
 					return (
@@ -49,6 +49,7 @@ const Contact = () => {
 										<a
 											target="_blank"
 											rel="noreferrer"
+											className="mainContent"
 											href={`${content === "email" ? "mailto:" : "tel:"}${
 												currentResume.mainContent[content]
 											}`}
@@ -56,11 +57,18 @@ const Contact = () => {
 											{trimUrl(currentResume.mainContent[content])}
 										</a>
 									)}
-									{content === "address" && currentResume.mainContent[content]}
-									{/* {content === "dob" &&
-															JSON.stringify(
-																currentResume.mainContent[content]
-															)} */}
+									{content === "address" && (
+										<p className="m-0 mainContent">
+											{currentResume.mainContent[content]}
+										</p>
+									)}
+									{content === "dob" && (
+										<p className="m-0 mainContent">
+											{currentResume.mainContent[content]
+												.toDate()
+												.toLocaleDateString("en-US")}
+										</p>
+									)}
 								</div>
 							</div>
 						)
@@ -80,6 +88,7 @@ const Contact = () => {
 												target="_blank"
 												rel="noreferrer"
 												href={currentResume.social[social]}
+												className="social"
 											>
 												{trimUrl(currentResume.social[social])}
 											</a>
@@ -99,13 +108,13 @@ const Contact = () => {
 					<div className="rb-icon-circle">
 						<i className="fas fa-address-book"></i>
 					</div>
-					<b className="ps-2">CONTACT</b>
+					<b className="ps-2 social">CONTACT</b>
 				</h6>
 				<b>
-					<p className="my-1">Contact</p>
+					<p className="my-1 social">Contact</p>
 				</b>
 				<p className="my-1">
-					<i className="fas fa-city"></i> Social Profiles
+					<i className="fas fa-city social"></i> Social Profiles
 				</p>
 			</div>
 		);

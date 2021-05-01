@@ -20,16 +20,20 @@ export function AuthProvider({ children }) {
 		const unsubscribe = auth().onAuthStateChanged(async (userAuth) => {
 			const id = uuidv4();
 			generateResumeDocument(id, userAuth, updateResume);
-			const user = await generateUserDocument(userAuth, id);
-			setCurrentUser(user);
-			setLoading(false);
-		});
 
+			function updateResume(resume) {
+				if (resume) {
+					setCurrentResume(resume);
+				}
+				generateUserDocument(userAuth, id).then((user) => {
+					setCurrentUser(user);
+					setLoading(false);
+				});
+			}
+		});
 		return unsubscribe;
 	}, []);
-	const updateResume = (resume) => {
-		setCurrentResume(resume);
-	};
+
 	const value = {
 		currentResume,
 		currentUser,

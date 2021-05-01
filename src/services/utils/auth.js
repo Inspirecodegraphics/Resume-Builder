@@ -38,12 +38,12 @@ export function getProvider(providerId) {
 }
 
 export function oneTapSignIn(handleOneTapSignIn) {
-	window.google &&
-		window.google.accounts.id.initialize({
-			client_id:
-				"1058073675937-8jutvojbbef07qvdhgiqavrej4htglkc.apps.googleusercontent.com",
-			callback: handleOneTapSignIn,
-		});
+	window.google.accounts.id.initialize({
+		client_id:
+			"1058073675937-8jutvojbbef07qvdhgiqavrej4htglkc.apps.googleusercontent.com",
+		callback: handleOneTapSignIn,
+		state_cookie_domain: "http://localhost:3000/",
+	});
 	auth().onAuthStateChanged((user) => {
 		if (!user) {
 			window.google.accounts.id.prompt((notification) => {
@@ -87,7 +87,9 @@ export const generateResumeDocument = async (
 	callback,
 	additionalData
 ) => {
-	if (!user) return;
+	if (!user) {
+		return callback();
+	}
 
 	const resumeCollection = firestore.collection(`/users/${user.uid}/resumes`);
 	if ((await resumeCollection.get()).empty) {
@@ -98,8 +100,8 @@ export const generateResumeDocument = async (
 			try {
 				await resumeRef.set({
 					resumeId,
-					mainContent: {},
-					social: {},
+					// mainContent: {},
+					// social: {},
 					...additionalData,
 				});
 			} catch (error) {
@@ -112,11 +114,10 @@ export const generateResumeDocument = async (
 	const userDocument = await firestore.doc(`users/${user.uid}`).get();
 	const currentUser = userDocument.data();
 
-	getResumeDocument(currentUser.resumeId, user.uid, callback);
+	return getResumeDocument(currentUser.resumeId, user.uid, callback);
 };
 const getResumeDocument = async (resumeId, uid, callback) => {
 	if (!uid && !resumeId) return null;
-	console.log("Resume Snapshot");
 	try {
 		firestore.doc(`/users/${uid}/resumes/${resumeId}`).onSnapshot((doc) => {
 			callback(doc.data());

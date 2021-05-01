@@ -62,7 +62,13 @@ class CertificateForm extends Form {
 	generateDoc(data) {
 		return {
 			label: data.label || "CERTIFICATES",
-			certificate: data.certificate || [],
+			// certificate: data.certificate || [],
+			certificate: data.certificate.map((cert) => {
+				if (Boolean(cert.certificateDate.seconds)) {
+					cert.certificateDate = cert.certificateDate.toDate();
+				}
+				return cert;
+			}),
 		};
 	}
 
@@ -70,9 +76,9 @@ class CertificateForm extends Form {
 		label: Joi.string().label("Label"),
 		certificate: {
 			id: Joi.number(),
-			name: Joi.string().required().label("Certificate Name"),
-			institution: Joi.string().required().max(50).label("Institution/Place"),
-			desc: Joi.string().allow("").max(100),
+			name: Joi.string().required().max(50).label("Certificate Name"),
+			institution: Joi.string().required().max(25).label("Institution/Place"),
+			desc: Joi.string().allow("").max(50),
 			externalLink: Joi.string().allow(""),
 			certificateDate: Joi.date().label("Certifiation Date"),
 		},

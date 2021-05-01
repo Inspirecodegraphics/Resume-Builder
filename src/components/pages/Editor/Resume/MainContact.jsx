@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useContext } from "react";
 import { useAuth } from "../../../../Providers/AuthProvider";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
@@ -17,20 +17,21 @@ const useStyles = makeStyles((theme) => ({
 		display: "inline-block",
 	},
 	large: {
-		width: theme.spacing(16),
-		height: theme.spacing(16),
+		width: 145,
+		height: 145,
+		zIndex: 2,
 	},
 }));
 const MainContact = () => {
 	const classes = useStyles();
-
+	useEffect(() => {}, []);
 	const { currentResume, currentUser } = useAuth();
 
 	const empty = () => {
 		return (
-			<div className="pt-3 pb-2 mainContact">
-				<div className="row p-1 ">
-					<div className="col-3 p-0 d-flex justify-content-end align-items-center">
+			<div className="py-3 pt-4 mt-1">
+				<div className="row avtar-row">
+					<div className="col-2 avtar-col p-0 d-flex justify-content-end align-items-center">
 						<div className="avtar-outer">
 							<Avatar
 								alt={currentUser.displayName}
@@ -39,25 +40,41 @@ const MainContact = () => {
 							/>
 						</div>
 					</div>
-					<div className="col-9 px-2 main-strip">
-						<h2 className="mb-0 text-uppercase">{currentUser.displayName}</h2>
-						{currentResume.mainContent && (
-							<div>
-								<h5 style={{ fontSize: "large" }} className="mb-1">
-									{currentResume.mainContent.tag}
-								</h5>
-								<hr className="rb-divider my-1" />
-								<p style={{ height: "85px" }} className="rb-desc m-0">
-									{currentResume.mainContent.desc}
-								</p>
+					<div className="col-1 p-0 d-flex justify-content-end align-items-center"></div>
+
+					<div className="col-11 avtar-col px-3 main-strip">
+						<div className="row">
+							<div className="col">
+								<h2 className="mb-0 text-uppercase mainContent">
+									{(currentResume.mainContent &&
+										currentResume.mainContent.name) ||
+										currentUser.displayName ||
+										"YOUR NAME"}
+								</h2>
+								<div>
+									<h5
+										style={{ fontSize: "large" }}
+										className="mb-1 mainContent"
+									>
+										{(currentResume.mainContent &&
+											currentResume.mainContent.tag) ||
+											"Professional Title"}
+									</h5>
+									<hr className="rb-divider my-1" />
+									<p className="rb-desc m-0 mainContent">
+										{(currentResume.mainContent &&
+											currentResume.mainContent.desc) ||
+											"Short and engaging pitch about yourself."}
+									</p>
+								</div>
 							</div>
-						)}
+						</div>
 					</div>
 				</div>
 			</div>
 		);
 	};
-	return empty();
+	return currentResume ? empty() : "";
 };
 
 export default MainContact;

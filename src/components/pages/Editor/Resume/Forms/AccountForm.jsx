@@ -58,7 +58,7 @@ class AccountForm extends Form {
 			email: data.email || "",
 			phoneNumber: data.phoneNumber || "",
 			name: data.name || "",
-			dob: data.dob || new Date(),
+			dob: data.dob.toDate() || new Date(),
 			desc: data.desc || "",
 			tag: data.tag || "",
 		};
@@ -69,9 +69,9 @@ class AccountForm extends Form {
 			.email({ minDomainSegments: 1, tlds: { allow: ["com", "net"] } })
 			.label("Email"),
 		phoneNumber: Joi.string().allow("").max(10).min(10).label("Contact"),
-		address: Joi.string().allow("").max(250).label("Address"),
-		desc: Joi.string().allow("").max(500).label("Description"),
-		tag: Joi.string().allow("").max(50).label("Tagline"),
+		address: Joi.string().allow("").max(50).label("Address"),
+		desc: Joi.string().allow("").max(350).label("Description"),
+		tag: Joi.string().allow("").max(40).label("Tagline"),
 		name: Joi.string().allow("").max(25).label("Name"),
 		dob: Joi.optional().label("Date"),
 	};

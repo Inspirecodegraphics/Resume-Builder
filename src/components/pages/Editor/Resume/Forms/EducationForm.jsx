@@ -55,7 +55,7 @@ class EducationForm extends Form {
 
 	componentDidMount() {
 		const { currentUser, currentResume } = this.context;
-		let data = { ...this.state };
+		const data = { ...this.state };
 		if (currentResume.education) {
 			data.mainContent = this.generateDoc(currentResume.education);
 		}
@@ -65,7 +65,16 @@ class EducationForm extends Form {
 	generateDoc(data) {
 		return {
 			label: data.label || "EDUCATION",
-			education: data.education || [],
+			// education: data.education || [],
+			education: data.education.map((edu) => {
+				if (Boolean(edu.startDate.seconds)) {
+					edu.startDate = edu.startDate.toDate();
+				}
+				if (Boolean(edu.endDate.seconds)) {
+					edu.endDate = edu.endDate.toDate();
+				}
+				return edu;
+			}),
 		};
 	}
 

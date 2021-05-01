@@ -22,18 +22,18 @@ const InterestHobbies = () => {
 	const { currentResume } = useAuth();
 	const interest = () => {
 		return (
-			<div className="pb-3 interest">
-				<h6 className="d-flex align-items-center">
+			<div className="pb-3">
+				<h6 className="d-flex align-items-center mb-1">
 					<div className="rb-icon-circle">
 						<i className="fas fa-heart"></i>
 					</div>
-					<b className="ps-2">{currentResume.interest.label}</b>
+					<b className="ps-2 interest">{currentResume.interest.label}</b>
 				</h6>
 				<div>
 					{currentResume.interest.interest.map((interest, index) => (
 						<Button
 							key={index}
-							className={classes.root + " skill-btn"}
+							className={classes.root + " skill-btn interest"}
 							size="small"
 						>
 							{interest.name.toUpperCase()}
@@ -50,10 +50,10 @@ const InterestHobbies = () => {
 					<div className="rb-icon-circle">
 						<i className="fas fa-heart"></i>
 					</div>
-					<b className="ps-2">INTEREST & HOBBIES</b>
+					<b className="ps-2 interest">INTEREST & HOBBIES</b>
 				</h6>
 				<b>
-					<p className="my-1">Interest & Hobbies</p>
+					<p className="my-1 interest">Interest & Hobbies</p>
 				</b>
 			</div>
 		);

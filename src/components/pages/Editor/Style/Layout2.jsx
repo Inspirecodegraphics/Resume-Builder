@@ -16,45 +16,43 @@ import AboutMe from "./../Resume/AboutMe";
 import "./Layout2.css";
 const Layout2 = () => {
 	return (
-		<div className="container-fluid h-100 m-0 p-0 layout-2">
+		<div
+			className="container-fluid h-100 m-0 p-0 layout-2"
+			style={{ width: "inherit" }}
+		>
 			<div
 				className="row m-0"
-				style={{ height: "inherit", maxHeight: "297mm" }}
+				style={{ height: "inherit", maxHeight: "297mm", width: "inherit" }}
 			>
-				<div className="col-4 ps-3 pe-0 py-2 layout2-left">
-					<Contact></Contact>
-					<Languages></Languages>
-					<div className="container-fluid px-0 pb-3">
-						<h6>
-							<i class="fas fa-cogs"></i> <b>TECHNOLOGIES</b>
-						</h6>
-						<div className="row mx-0 py-1">
-							<div className="col-2 px-1">
-								<Skeleton variant="circle" width={25} height={25} />
-							</div>
-							<div className="col-10 px-1">
-								<Skeleton animation="wave" variant="text" />
-							</div>
+				<div className="col-12 top-line">
+					<div className="row">
+						<div className="col-8 pe-0">
+							<hr />
 						</div>
-						<div className="row mx-0 py-1">
-							<div className="col-2 px-1">
-								<Skeleton variant="circle" width={25} height={25} />
-							</div>
-							<div className="col-10 px-1">
-								<Skeleton animation="wave" variant="text" />
-							</div>
+						<div className="col-2 px-0">
+							<h4 className="text text-center">Hello, I'm</h4>
+						</div>
+						<div className="col-2 ps-0">
+							<hr />
 						</div>
 					</div>
+				</div>
+				<div className="col-4 ps-3 pe-0 py-2 pt-3 layout2-left">
+					<Contact></Contact>
+					<Languages></Languages>
+					<TechnicalSkills></TechnicalSkills>
+
 					<Skills></Skills>
+					<Certificates></Certificates>
+
 					<InterestHobbies></InterestHobbies>
 				</div>
-				<div className="col-8 px-3 py-2">
+				<div className="col-8 py-2">
 					<MainContact></MainContact>
 					<AboutMe></AboutMe>
 					<WorkExperience></WorkExperience>
 					<Education></Education>
 					<PersonalProjects></PersonalProjects>
-					{/* <Certificates></Certificates> */}
 					<Honor></Honor>
 				</div>
 			</div>
@@ -66,9 +64,7 @@ export default Layout2;
 
 // <div className="row px-4 py-1">
 //   <div className="col-6">
-//     <Certificates></Certificates>
 //     <Achievements></Achievements>
-//     <TechnicalSkills></TechnicalSkills>
 //   </div>
 //   <div className="col-6">
 //   </div>

@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 
 import Dialog from "@material-ui/core/Dialog";
 import DialogContent from "@material-ui/core/DialogContent";
@@ -20,35 +20,50 @@ import LanguageForm from "./Forms/LanguagesForm";
 import SkillForm from "./Forms/SkillForm";
 import InterestHobbiesForm from "./Forms/InterestsForm";
 import AboutForm from "./Forms/AboutForm";
-export default function AccountDailog({ resume, open, setOpen }) {
-	const [value, setValue] = useState(0);
-	const { currentUser, currentResume } = useAuth();
+
+export default function AccountDailog({ technology }) {
+	// const { currentUser, currentResume } = useAuth();
+	const [dailogOpen, setDailogOpen] = useState(false);
+	const [index, setIndex] = useState(0);
+
 	const type = [
-		"Main Contact",
-		"Social",
-		"About",
-		"Experience",
-		"Education",
-		"Certificate",
-		"Achievement",
-		"Technical Skills",
-		"Honor & Awards",
-		"Project",
-		"Language",
-		"Skill",
-		"Interests",
+		"mainContent",
+		"social",
+		"about",
+		"workExperience",
+		"education",
+		"project",
+		"technicalSkills",
+		"certificate",
+		"achievement",
+		"award",
+		"language",
+		"skill",
+		"interest",
 	];
+	useEffect(() => {
+		type.forEach((target) => {
+			document.querySelectorAll(`.${target}`).forEach((doc) => {
+				doc.addEventListener("click", (e) => {
+					e.preventDefault();
+					setIndex(type.indexOf(target));
+					setDailogOpen(true);
+				});
+			});
+		});
+	}, []);
+
 	const handleClose = () => {
-		setOpen(false);
+		setDailogOpen(false);
 	};
 	const handleTabChange = (event, newValue) => {
-		setValue(newValue);
+		setIndex(newValue);
 	};
 
 	return (
 		<div>
 			<Dialog
-				open={open}
+				open={dailogOpen}
 				onClose={handleClose}
 				className="m-2"
 				aria-labelledby="form-dialog-title"
@@ -60,7 +75,7 @@ export default function AccountDailog({ resume, open, setOpen }) {
 
 					<Paper elevation={0} square>
 						<Tabs
-							value={value}
+							value={index}
 							indicatorColor="primary"
 							textColor="primary"
 							onChange={handleTabChange}
@@ -74,87 +89,48 @@ export default function AccountDailog({ resume, open, setOpen }) {
 						</Tabs>
 					</Paper>
 
-					{type[value] === "Main Contact" && (
-						<AccountForm
-							currentResume={currentResume}
-							type={type[value]}
-							currentUser={currentUser}
-							handleClose={handleClose}
-						></AccountForm>
-					)}
-					{type[value] === "Social" && (
-						<SocialForm handleClose={handleClose}></SocialForm>
-					)}
-					{type[value] === "About" && (
-						<AboutForm handleClose={handleClose}></AboutForm>
-					)}
-					{type[value] === "Experience" && (
-						<ExperienceForm
-							currentResume={currentResume}
-							currentUser={currentUser}
-							handleClose={handleClose}
-						></ExperienceForm>
-					)}
-					{type[value] === "Education" && (
-						<EducationForm
-							currentResume={currentResume}
-							currentUser={currentUser}
-							handleClose={handleClose}
-						></EducationForm>
-					)}
-					{type[value] === "Certificate" && (
-						<CertificateForm
-							currentResume={currentResume}
-							currentUser={currentUser}
-							handleClose={handleClose}
-						></CertificateForm>
-					)}
-					{type[value] === "Achievement" && (
-						<AchievementForm
-							currentResume={currentResume}
-							currentUser={currentUser}
-							handleClose={handleClose}
-						></AchievementForm>
-					)}
-					{type[value] === "Technical Skills" && (
+					{type[index] === "technicalSkills" && (
 						<TechnicalSkillsForm
-							currentResume={currentResume}
-							currentUser={currentUser}
+							technology={technology}
 							handleClose={handleClose}
 						></TechnicalSkillsForm>
 					)}
-					{type[value] === "Honor & Awards" && (
-						<AwardHonorForm
-							currentResume={currentResume}
-							currentUser={currentUser}
-							handleClose={handleClose}
-						></AwardHonorForm>
+					{type[index] === "mainContent" && (
+						<AccountForm handleClose={handleClose}></AccountForm>
 					)}
-					{type[value] === "Project" && (
-						<PersonalProject
-							currentResume={currentResume}
-							currentUser={currentUser}
-							handleClose={handleClose}
-						></PersonalProject>
+					{type[index] === "social" && (
+						<SocialForm handleClose={handleClose}></SocialForm>
 					)}
-					{type[value] === "Language" && (
-						<LanguageForm
-							currentResume={currentResume}
-							currentUser={currentUser}
-							handleClose={handleClose}
-						></LanguageForm>
+					{type[index] === "about" && (
+						<AboutForm handleClose={handleClose}></AboutForm>
 					)}
-					{type[value] === "Skill" && (
-						<SkillForm
-							currentResume={currentResume}
-							currentUser={currentUser}
-							handleClose={handleClose}
-						></SkillForm>
+					{type[index] === "workExperience" && (
+						<ExperienceForm handleClose={handleClose}></ExperienceForm>
 					)}
-					{type[value] === "Interests" && (
+					{type[index] === "education" && (
+						<EducationForm handleClose={handleClose}></EducationForm>
+					)}
+					{type[index] === "certificate" && (
+						<CertificateForm handleClose={handleClose}></CertificateForm>
+					)}
+					{type[index] === "achievement" && (
+						<AchievementForm handleClose={handleClose}></AchievementForm>
+					)}
+
+					{type[index] === "award" && (
+						<AwardHonorForm handleClose={handleClose}></AwardHonorForm>
+					)}
+					{type[index] === "project" && (
+						<PersonalProject handleClose={handleClose}></PersonalProject>
+					)}
+					{type[index] === "language" && (
+						<LanguageForm handleClose={handleClose}></LanguageForm>
+					)}
+					{type[index] === "skill" && (
+						<SkillForm handleClose={handleClose}></SkillForm>
+					)}
+					{type[index] === "interest" && (
 						<InterestHobbiesForm
-							currentResume={currentResume}
-							currentUser={currentUser}
 							handleClose={handleClose}
 						></InterestHobbiesForm>
 					)}
@@ -163,4 +139,3 @@ export default function AccountDailog({ resume, open, setOpen }) {
 		</div>
 	);
 }
-// toDateString

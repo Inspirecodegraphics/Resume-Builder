@@ -97,7 +97,6 @@ class Form extends Component {
 		const mainContent = { ...this.state.mainContent };
 		let target = mainContent[type].find((e) => e.id === id);
 		target.value = value;
-		console.log(target);
 		this.setState({ mainContent });
 	};
 	handleRatingHoverChange = (event, value) => {

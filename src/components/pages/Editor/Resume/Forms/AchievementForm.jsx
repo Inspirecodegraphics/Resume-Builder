@@ -60,7 +60,13 @@ class AchievementForm extends Form {
 	generateDoc(data) {
 		return {
 			label: data.label || "ACHIEVEMENTS",
-			achievement: data.achievement || [],
+			// achievement: data.achievement || [],
+			achievement: data.achievement.map((achieve) => {
+				if (Boolean(achieve.achievementDate.seconds)) {
+					achieve.achievementDate = achieve.achievementDate.toDate();
+				}
+				return achieve;
+			}),
 		};
 	}
 

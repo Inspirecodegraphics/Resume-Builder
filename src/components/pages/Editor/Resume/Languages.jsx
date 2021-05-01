@@ -7,22 +7,22 @@ const Languages = () => {
 
 	const languages = () => {
 		return (
-			<div className="pb-3 language">
-				<h6 className="d-flex align-items-center">
+			<div className="pb-3">
+				<h6 className="d-flex align-items-center mb-1">
 					<div className="rb-icon-circle">
 						<i className="fas fa-comment-dots"></i>
 					</div>
-					<b className="ps-2">{currentResume.language.label}</b>
+					<b className="ps-2 language">{currentResume.language.label}</b>
 				</h6>
 				{currentResume.language.language.map((language, index) => (
 					<div key={index} className="row m-0 mb-2">
 						<div className="col-6 px-1">
-							<h6 style={{ fontSize: "inherit" }} className="mb-0">
+							<h6 style={{ fontSize: "inherit" }} className="mb-0 language">
 								{language.name.toUpperCase()}
 							</h6>
 						</div>
 						<div className="col-6 px-0">
-							<h6 className="mb-0">
+							<h6 className="mb-0 language">
 								{_.range(5).map((ele) => {
 									return (
 										<i
@@ -46,14 +46,15 @@ const Languages = () => {
 					<div className="rb-icon-circle">
 						<i className="fas fa-comment-dots"></i>
 					</div>
-					<b className="ps-2">LANGUAGES</b>
+					<b className="ps-2 language">LANGUAGES</b>
 				</h6>
 				<b>
-					<p className="my-1">Language</p>
+					<p className="my-1 language">Language</p>
 				</b>
-				<p className="my-1">
-					Proficiency <i className="fas fa-square"></i>{" "}
+				<p className="my-1 language">
+					Proficiency {"  "}
 					<i className="fas fa-square"></i> <i className="fas fa-square"></i>{" "}
+					<i className="fas fa-square"></i>{" "}
 					<i className="fas fa-square text-white"></i>{" "}
 					<i className="fas fa-square text-white"></i>{" "}
 				</p>
