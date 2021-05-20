@@ -21,7 +21,7 @@ import Dropdown from "../common/Dropdown";
 import { useAuth } from "../../Providers/AuthProvider";
 import LoginModal from "./../LoginModal";
 import UserDropdown from "./UserDropdown";
-
+import icon from "../../static/logo.png";
 const Navbar = ({ handleDrawerToggle, drawerWidth }) => {
 	const useStyles = makeStyles((theme) => ({
 		appBar: {
@@ -143,7 +143,7 @@ const Navbar = ({ handleDrawerToggle, drawerWidth }) => {
 				<Typography variant="subtitle1" noWrap className={classes.title}>
 					<b>
 						<Link className={classes.link + " text-uppercase"} to="/">
-							Resume Builder
+							<img src={icon} alt="" style={{ width: "40px" }} /> Resume Base
 						</Link>
 					</b>
 				</Typography>

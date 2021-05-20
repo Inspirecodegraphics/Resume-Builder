@@ -6,11 +6,15 @@ import { useAuth } from "../../../Providers/AuthProvider";
 
 const Landing = () => {
 	const { currentUser } = useAuth();
+	function scrollToTop() {
+		window.scrollTo(0, 0);
+	}
 	return (
-		<div className="container text-center ">
+		<div className="container text-center">
 			<div className="row">
 				<div className="col">
 					<h4 className="p-2 py-4">The Online Resume Builder You Deserve</h4>
+
 					<p className="p-2">
 						Creating a Professional Resume and Cover Letter Has Never Been So
 						Easy
@@ -18,11 +22,19 @@ const Landing = () => {
 
 					<Button variant="outlined" className="mb-2">
 						{currentUser ? (
-							<Link className="text-dark px-2" to="/editor">
+							<Link
+								onClick={scrollToTop}
+								className="text-dark px-2"
+								to="/editor"
+							>
 								Build My Resume
 							</Link>
 						) : (
-							<Link className="text-dark px-2" to="/resume-templates">
+							<Link
+								onClick={scrollToTop}
+								className="text-dark px-2"
+								to="/resume-templates"
+							>
 								Get started for free
 							</Link>
 						)}
@@ -31,6 +43,9 @@ const Landing = () => {
 			</div>
 			<div className="row">
 				<div className="col">
+					<h3 className="p-2 py-3">
+						<b>See how we improve your chances of getting hired!</b>
+					</h3>
 					<p className="pt-2 m-auto" style={{ maxWidth: "500px" }}>
 						Making a resume is the first step of any job search. Not sure how to
 						make a resume? Our online resume builder gives you free resume
@@ -41,7 +56,11 @@ const Landing = () => {
 						style={{ width: "100px", height: "2px" }}
 					/>
 					<Button variant="outlined" className="mb-2">
-						<Link className="text-dark px-2" to="/resume-templates">
+						<Link
+							onClick={scrollToTop}
+							className="text-dark px-2"
+							to="/resume-templates"
+						>
 							Get my free template
 						</Link>
 					</Button>

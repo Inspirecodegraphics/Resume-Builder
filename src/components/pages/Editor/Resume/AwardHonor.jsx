@@ -5,7 +5,9 @@ import { formatDate } from "../../../../services/adminService";
 const Honor = () => {
 	const { currentResume } = useAuth();
 	const getDate = (date) => {
-		const dateObj = formatDate(date, [{ month: "short" }, "year"]);
+		const currentDate = date.seconds ? date.toDate() : date;
+
+		const dateObj = formatDate(currentDate, [{ month: "short" }, "year"]);
 		return `${dateObj.month} ${dateObj.year}`;
 	};
 	const award = () => {
@@ -13,7 +15,7 @@ const Honor = () => {
 			<div className="pb-2 experience">
 				<h6 className="d-flex align-items-center mb-1">
 					<div className="rb-icon-circle">
-						<i className="fas fa-file-alt"></i>
+						<i className="fas fa-award"></i>
 					</div>
 					<b className="ps-2 award">{currentResume.award.label}</b>
 				</h6>
@@ -24,7 +26,11 @@ const Honor = () => {
 								{award.name}
 								{award.externalLink && (
 									<sup>
-										<a href={award.externalLink}>
+										<a
+											href={award.externalLink}
+											target="_blank"
+											rel="noreferrer"
+										>
 											<i className="fas fa-external-link-alt ps-1 Elink"></i>
 										</a>
 									</sup>
@@ -34,7 +40,7 @@ const Honor = () => {
 						<div className="col-2 px-1">
 							<p className="m-0 award">
 								<i className="fas fa-calendar-alt pe-1"></i>
-								{getDate(award.awardDate.toDate())}
+								{getDate(award.awardDate)}
 							</p>
 						</div>
 						{award.institution && (
@@ -69,7 +75,7 @@ const Honor = () => {
 			<div className="py-3">
 				<h6 className="d-flex align-items-center">
 					<div className="rb-icon-circle">
-						<i className="fas fa-file-alt"></i>
+						<i className="fas fa-award"></i>
 					</div>
 					<b className="ps-2 award">HONOR AND AWARDS</b>
 				</h6>

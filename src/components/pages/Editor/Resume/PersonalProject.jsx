@@ -6,7 +6,9 @@ import { formatDate } from "../../../../services/adminService";
 const PersonalProjects = () => {
 	const { currentResume } = useAuth();
 	const getDate = (date) => {
-		const dateObj = formatDate(date, [{ month: "short" }, "year"]);
+		const currentDate = date.seconds ? date.toDate() : date;
+
+		const dateObj = formatDate(currentDate, [{ month: "short" }, "year"]);
 		return `${dateObj.month} ${dateObj.year}`;
 	};
 	const project = () => {
@@ -25,7 +27,11 @@ const PersonalProjects = () => {
 								{project.name}
 								{project.externalLink && (
 									<sup>
-										<a href={project.externalLink}>
+										<a
+											href={project.externalLink}
+											target="_blank"
+											rel="noreferrer"
+										>
 											<i className="fas fa-external-link-alt ps-1 Elink"></i>
 										</a>
 									</sup>
@@ -35,12 +41,8 @@ const PersonalProjects = () => {
 						<div className="col-4 px-1">
 							<p className="m-0 project">
 								<i className="fas fa-calendar-alt pe-1"></i>
-								{getDate(project.startDate.toDate())} -
-								{project.present ? (
-									<b> Present</b>
-								) : (
-									getDate(project.endDate.toDate())
-								)}
+								{getDate(project.startDate)} -
+								{project.present ? <b> Present</b> : getDate(project.endDate)}
 							</p>
 						</div>
 						{project.institution && (

@@ -52,7 +52,7 @@ function App() {
 	return (
 		<AuthProvider>
 			<Router>
-				<div>
+				<div className="default-theme">
 					<Backdrop className={classes.backdrop} open={oneTapLoading}>
 						<CircularProgress color="inherit" />
 					</Backdrop>

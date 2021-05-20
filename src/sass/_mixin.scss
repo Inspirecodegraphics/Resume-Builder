@@ -1,18 +1,70 @@
 @mixin themes(
 	$sidebar-bg-color,
-	$primary-color,
 	$primary-highlight-color,
+	$secondary-highlight-color,
 	$border-color,
 	$submenu-bg-color,
 	$menu-icon-bg-color,
 	$menu-icon-color,
-	$menu-icon-highlight-color,
+	$primary-icon-highlight-color,
 	$menu-header-color,
 	$search-input-bg-color,
 	$footer-bg-color,
 	$shadow-color,
-	$scrollbar-color
+	$scrollbar-color,
+	$primary-color,
+	$primary-color1,
+	$primary-light,
+	$secondary-color
 ) {
+	.rb-main {
+		color: $primary-color;
+		.home {
+			.benifits {
+				.circle {
+					background-color: $primary-highlight-color;
+					svg {
+						fill: $primary-color;
+					}
+				}
+				.icon {
+					fill: $secondary-highlight-color;
+				}
+				.circle.selected {
+					background-color: $primary-icon-highlight-color;
+				}
+				.circle:hover {
+					background-color: $primary-icon-highlight-color;
+				}
+				hr {
+					background-color: $secondary-highlight-color;
+				}
+			}
+			#features {
+				i {
+					color: $secondary-highlight-color;
+				}
+			}
+			.working {
+				.circle {
+					color: $secondary-highlight-color;
+					border-bottom: 2px solid $secondary-highlight-color;
+				}
+				.circle.selected {
+					color: $primary-color;
+					border-bottom: 3px solid $primary-color;
+				}
+				.icon svg {
+					.secondary {
+						fill: $secondary-color;
+					}
+					.primary {
+						fill: $secondary-highlight-color;
+					}
+				}
+			}
+		}
+	}
 	.sidebar-wrapper {
 		background-color: $sidebar-bg-color;
 
@@ -47,8 +99,8 @@
 		.sidebar-menu a:hover i,
 		.sidebar-menu a:hover:before,
 		.sidebar-menu li.active a i {
-			color: $menu-icon-highlight-color;
-			// text-shadow: 0px 0px 10px rgba($menu-icon-highlight-color, .5);
+			color: $primary-icon-highlight-color;
+			// text-shadow: 0px 0px 10px rgba($primary-icon-highlight-color, .5);
 		}
 
 		.sidebar-menu ul li a i {

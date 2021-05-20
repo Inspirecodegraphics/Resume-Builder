@@ -1,0 +1,26 @@
+.theme-outer {
+	width: 400px;
+	height: 200px;
+	/* background-color: transparent !important; */
+	/* background-color: rgb(255, 239, 148) !important; */
+	cursor: initial;
+}
+.theme-outer .circular {
+	padding: 10px;
+}
+.circular-outline,
+.circular-outline-selected {
+	position: absolute;
+	border-radius: 50%;
+	width: calc(100% + 7px);
+	height: calc(100% + 7px);
+	left: -3.5px;
+	top: -3.5px;
+	border: 1px solid teal;
+}
+.circular-outline {
+	display: none;
+}
+.circular-outline-outer:hover .circular-outline {
+	display: block;
+}

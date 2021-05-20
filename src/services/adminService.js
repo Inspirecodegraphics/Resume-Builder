@@ -44,13 +44,13 @@ const features = [
 				icon: "fas fa-edit",
 				title: "Modern design",
 				description:
-					"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reprehenderit maiores nam, aperiam minima.",
+					"Modern design elements to your resume, including colors and fonts, to give it a creative edge.",
 			},
 			{
 				icon: "fas fa-cogs",
 				title: "Easy for create",
 				description:
-					"Lorem ipsum dolor sit amet, consectetur adipisicing elit. Reprehenderit maiores nam, aperiam minima.",
+					"It only takes a couple of seconds to start, you need to choose a design and layout to create resume",
 			},
 			{
 				icon: "fas fa-tablet-alt",
@@ -64,8 +64,7 @@ const features = [
 		col: [
 			{
 				type: "image",
-				src:
-					"https://mdbootstrap.com/img/Mockups/Transparent/Small/admin-new.png",
+				src: "https://mdbootstrap.com/img/Mockups/Transparent/Small/admin-new.png",
 			},
 		],
 	},

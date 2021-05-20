@@ -1,19 +1,20 @@
 {
-  "short_name": "React App",
-  "name": "Create React App Sample",
+  "short_name": "ResumeBase",
+  "name": "Inspire Resume Builder",
+  "description": "INSPIRE CODE & GRAPHIC is an open-source website. Organize & managed by the INSPIRE team. INSPIRE RESUME (Resume Builder) is a new section of the core project, that gives full access to create, customize, and maintain multipurpose Resume for beginner to experienced. Our resume builder is 100% free to use. Just choose from smart resume templates that highlight your best qualities.",
   "icons": [
     {
-      "src": "favicon.ico",
+      "src": "logo.png",
       "sizes": "64x64 32x32 24x24 16x16",
-      "type": "image/x-icon"
+      "type": "image/png"
     },
     {
-      "src": "logo192.png",
+      "src": "logo.png",
       "type": "image/png",
       "sizes": "192x192"
     },
     {
-      "src": "logo512.png",
+      "src": "logo.png",
       "type": "image/png",
       "sizes": "512x512"
     }

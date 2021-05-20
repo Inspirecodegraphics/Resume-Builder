@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from "react";
 import { useHistory } from "react-router-dom";
 import { getResume } from "./../../../services/resumeService";
+import Layout2 from "./Style/Layout2";
 
 const Editor = () => {
 	const [EditorType, setEditorType] = useState("resume");

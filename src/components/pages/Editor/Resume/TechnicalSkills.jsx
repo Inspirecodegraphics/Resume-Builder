@@ -1,14 +1,9 @@
 import React from "react";
 import { useAuth } from "../../../../Providers/AuthProvider";
-import Button from "@material-ui/core/Button";
 import CircularProgress from "@material-ui/core/CircularProgress";
-import Typography from "@material-ui/core/Typography";
 import Box from "@material-ui/core/Box";
 import { makeStyles } from "@material-ui/core/styles";
 const useStyles = makeStyles((theme) => ({
-	root: {
-		position: "relative",
-	},
 	bottom: {
 		color: theme.palette.grey[theme.palette.type === "light" ? 200 : 700],
 	},
@@ -40,7 +35,7 @@ const TechnicalSkills = () => {
 				</h6>
 				<div className="row mx-0 pe-1">
 					{currentResume.technicalSkills.tech.map((tech, index) => (
-						<div key={index} className="col-3 px-0 circular ">
+						<div key={index} className="col-3 px-0 circular">
 							<Box position="relative" display="inline-flex" className="p-1">
 								<CircularProgress
 									variant="determinate"

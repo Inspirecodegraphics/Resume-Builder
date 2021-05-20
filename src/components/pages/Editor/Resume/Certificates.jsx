@@ -5,7 +5,7 @@ const Certificates = () => {
 		<div className="pb-3">
 			<h6 className="d-flex align-items-center">
 				<div className="rb-icon-circle">
-					<i className="fas fa-certificate "></i>
+					<i className="fas fa-certificate"></i>
 				</div>
 				<b className="ps-2 certificate">CERTIFICATES</b>
 			</h6>

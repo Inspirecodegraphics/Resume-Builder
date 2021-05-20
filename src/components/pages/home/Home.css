@@ -1,0 +1,104 @@
+.home {
+	background-color: white;
+}
+
+.hover {
+	transition: 0.3s !important;
+}
+.hover:hover {
+	box-shadow: 0 0 34px #c3c3c3 !important;
+}
+
+.service-title {
+	text-align: justify;
+}
+
+/* .working {
+	display: block;
+	position: relative;
+	z-index: 1;
+	background-color: black;
+}
+.working::after {
+	content: "";
+	background: url("../../../static/background/pricing-section-design.jpg");
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	position: absolute;
+	z-index: -1;
+} */
+
+.benifits .circle,
+.working .circle {
+	cursor: pointer;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	width: 100px;
+	margin: 10px;
+	transition: all 0.3s ease-in-out !important;
+	overflow: hidden;
+}
+
+.working .circle.selected h4 {
+	font-weight: 600;
+	font-size: 2rem;
+}
+.benifits .circle {
+	border-radius: 50%;
+	height: 100px;
+}
+
+.benifits .circle svg {
+	transition: all 0.1s ease-in-out !important;
+	fill: rgb(199, 85, 10);
+}
+
+@media only screen and (max-width: 600px) {
+	.benifits .circle {
+		width: 15vw;
+		height: 15vw;
+		margin: 5px;
+	}
+}
+.benifits .circle:hover {
+	background-color: rgba(255, 166, 0, 0.61);
+}
+.benefit-more,
+.working-more {
+	position: relative;
+	height: auto;
+	display: flex;
+	justify-content: center;
+}
+.benefit-more-box,
+.working-more-box {
+	text-align: center;
+	justify-content: center;
+	transform: scale(0);
+	opacity: 0;
+	position: absolute;
+	z-index: 1;
+	width: 100%;
+	top: 0;
+	left: 0;
+	transition: opacity 0.2s ease-out, transform 0.4s ease-out;
+}
+.benefit-more-box p,
+.working-more-box p {
+	max-width: 500px;
+}
+.benefit-more-box.selected,
+.working-more-box.selected {
+	transform: scale(1);
+	opacity: 1;
+	position: static;
+	float: left;
+	transition: opacity 0.7s ease-out, transform 0.7s ease-out;
+	z-index: 2;
+}

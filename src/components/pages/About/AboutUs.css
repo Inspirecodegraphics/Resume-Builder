@@ -1,0 +1,183 @@
+.team {
+	display: block;
+	position: relative;
+	z-index: 1;
+}
+/*
+.team::after {
+	content: "";
+	background: url("../../../static/background/pricing-section-design.jpg");
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	position: absolute;
+	z-index: -1;
+} */
+/* .about {
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
+	align-items: center;
+	min-height: 100vh;
+	background-color: #161623;
+} */
+/* section {
+	position: relative;
+} */
+.about section {
+	width: 100%;
+	background-color: #000000;
+	background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='100%25' height='100%25' viewBox='0 0 800 800'%3E%3Cg %3E%3Ccircle fill='%23000000' cx='400' cy='400' r='600'/%3E%3Ccircle fill='%23180d1c' cx='400' cy='400' r='500'/%3E%3Ccircle fill='%23261431' cx='400' cy='400' r='400'/%3E%3Ccircle fill='%23351947' cx='400' cy='400' r='300'/%3E%3Ccircle fill='%23451e5e' cx='400' cy='400' r='200'/%3E%3Ccircle fill='%23552277' cx='400' cy='400' r='100'/%3E%3C/g%3E%3C/svg%3E");
+	background-attachment: fixed;
+	background-size: cover;
+	background-position: center center;
+	background-repeat: no-repeat;
+}
+/* @media only screen and (max-width: 767px) {
+	.about section {
+		background-size: cover;
+	}
+} */
+.about section::before {
+	content: "";
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: linear-gradient(#f00, #f0f);
+	clip-path: circle(30% at right 70%);
+}
+.about section::after {
+	content: "";
+	position: fixed;
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	background: linear-gradient(#2196f3, #e91e63);
+	clip-path: circle(20% at 10% 10%);
+}
+.team h2 {
+	color: rgb(253, 255, 221);
+}
+.container-member {
+	position: relative;
+	z-index: 1;
+	display: flex;
+	justify-content: center;
+	flex-wrap: wrap;
+	align-items: center;
+	margin: 30px 0;
+}
+
+.card-member {
+	position: relative;
+	width: 300px;
+	height: 400px;
+	background: rgba(255, 255, 255, 0.05);
+	margin: 20px;
+	box-shadow: 0 15px 35px rgba(0, 0, 0, 0.2);
+	border-radius: 10px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	backdrop-filter: blur(10px);
+}
+.card-member::after {
+	content: "";
+	background-image: url("https://media.istockphoto.com/photos/transparent-glass-with-fog-up-and-water-drop-on-it-during-winter-up-picture-id1207979808?k=6&m=1207979808&s=612x612&w=0&h=BG3cdDYJoPD63MPZIg7BLRGR_OZ9mknH0llY5IMITHg=");
+	background-position: center;
+	background-repeat: no-repeat;
+	background-size: cover;
+	top: 0;
+	left: 0;
+	bottom: 0;
+	right: 0;
+	position: absolute;
+	z-index: -1;
+	opacity: 0.1;
+	border-radius: 10px;
+	transition: 0.5s;
+}
+.card-member:hover::after {
+	opacity: 0.3;
+}
+.content {
+	position: relative;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	flex-direction: column;
+	opacity: 0.6;
+	transition: 0.5s;
+}
+
+.card-member:hover .content {
+	opacity: 1;
+	transform: translateY(-20px);
+}
+.imgBx {
+	position: relative;
+	width: 150px;
+	height: 150px;
+	border-radius: 50%;
+	overflow: hidden;
+	border: 10px solid rgba(0, 0, 0, 0.3);
+}
+.imgBx-outer {
+	border: 2px solid rgba(255, 255, 255, 0.3);
+	padding: 2px;
+	border-radius: 50%;
+}
+.imgBx img {
+	position: absolute;
+	top: 0;
+	left: 0;
+	width: 100%;
+	opacity: 1 !important;
+	object-fit: cover;
+}
+
+.contentBx h3 {
+	color: #fff;
+	text-transform: uppercase;
+	letter-spacing: 1.5px;
+	font-size: 18px;
+	font-weight: 500;
+	text-align: center;
+	margin: 20px 0 10px;
+	line-height: 1.1em;
+}
+.contentBx h3 span {
+	text-transform: initial;
+	font-size: 12px;
+	font-weight: 300;
+}
+.sci {
+	position: absolute;
+	bottom: 50px;
+	display: flex;
+	padding: 0;
+}
+.sci li {
+	list-style: none;
+	margin: 0 10px;
+	transform: translateY(40px);
+	transition: 0.5s;
+	opacity: 0;
+	transition-delay: calc(0.1s * var(--i));
+}
+.card-member:hover .sci li {
+	transform: translateY(0px);
+	opacity: 1;
+}
+.sci li a {
+	color: #fff;
+	font-size: 20px;
+}

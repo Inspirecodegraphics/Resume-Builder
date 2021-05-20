@@ -41,13 +41,15 @@ h2.mainContent {
 	justify-content: center;
 	align-items: center;
 }
-.top-line {
+.top-line,
+.bottom-line {
 	width: 210mm;
 	position: absolute;
 	display: table;
 	padding-top: 0.35rem;
 }
-.top-line hr {
+.top-line hr,
+.bottom-line hr {
 	height: 4px;
 	opacity: 1;
 	margin-top: 0.25rem;
@@ -55,4 +57,7 @@ h2.mainContent {
 .top-line .text {
 	margin-bottom: 0;
 	text-transform: uppercase;
+}
+.bottom-line {
+	bottom: -573px;
 }

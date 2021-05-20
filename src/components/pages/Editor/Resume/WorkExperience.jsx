@@ -4,11 +4,14 @@ import { formatDate } from "../../../../services/adminService";
 
 const WorkExperience = () => {
 	const { currentResume } = useAuth();
+	console.log(currentResume);
 	const formatDesc = (desc) => {
 		return desc.split("/n");
 	};
 	const getDate = (date) => {
-		const dateObj = formatDate(date, [{ month: "short" }, "year"]);
+		const currentDate = date.seconds ? date.toDate() : date;
+
+		const dateObj = formatDate(currentDate, [{ month: "short" }, "year"]);
 		return `${dateObj.month} ${dateObj.year}`;
 	};
 	const workExperience = () => {
@@ -38,11 +41,11 @@ const WorkExperience = () => {
 						<div className="col-4 px-1 pb-1">
 							<p className="m-0 workExperience">
 								<i className="fas fa-calendar-alt pe-1"></i>
-								{getDate(experience.startDate.toDate())} -
+								{getDate(experience.startDate)}-
 								{experience.present ? (
 									<b> Present</b>
 								) : (
-									getDate(experience.endDate.toDate())
+									getDate(experience.endDate)
 								)}
 							</p>
 						</div>

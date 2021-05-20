@@ -14,6 +14,7 @@ import "./MainContent.css";
 import ProtectedRoute from "../common/ProtectedRoute";
 import ComingSoon from "./../ComingSoon";
 import NotFound from "./../NotFound";
+import AboutUs from "./../pages/About/AboutUs";
 
 const MainContent = ({ open, drawerWidth }) => {
 	const useStyles = makeStyles((theme) => ({
@@ -65,6 +66,7 @@ const MainContent = ({ open, drawerWidth }) => {
 					exact
 					component={Editor}
 				></ProtectedRoute>
+				<Route path="/about-us" exact component={AboutUs}></Route>
 				<Route path="/not-found" exact component={NotFound}></Route>
 				<Route path="/cover-Letters" exact component={ComingSoon}></Route>
 				<Route path="/resume-templates" exact component={ComingSoon}></Route>

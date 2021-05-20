@@ -31,7 +31,7 @@ const AwesomeFeatures = () => {
 								<React.Fragment key={features + index}>
 									<div className="row text-start">
 										<div className="col-2 py-2">
-											<i className={features.icon + " text-warning fa-2x"}></i>
+											<i className={features.icon + " fa-2x"}></i>
 										</div>
 										<h5 className="font-weight-bolder title text-start">
 											{features.title}
@@ -59,15 +59,3 @@ const AwesomeFeatures = () => {
 };
 
 export default AwesomeFeatures;
-
-// <div key={features + index} className="row mb-3">
-// 	<div className="col-1 p-0 pt-3 text-center">
-// 		<i className={features.icon + " text-warning fa-2x"}></i>
-// 	</div>
-// 	<div className="col-11 mb-2">
-// 		<h5 className="font-weight-bolder title text-left">
-// 			{features.title}
-// 		</h5>
-// 		<p className="text-justify">{features.description}</p>
-// 	</div>
-// </div>

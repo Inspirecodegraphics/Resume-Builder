@@ -39,23 +39,15 @@ const FontSelect = ({ item, setSelectedFont }) => {
 						color="inherit"
 					>
 						<p className="m-0">
-							<Font></Font>
+							<Font className="svg"></Font>
 							Font
 						</p>
 					</div>
 				</Tooltip>
 				<Popper
 					id="font-select"
-					keepMounted
 					anchorEl={anchorEl}
-					anchorOrigin={{
-						vertical: "bottom",
-						horizontal: "center",
-					}}
-					transformOrigin={{
-						vertical: "top",
-						horizontal: "center",
-					}}
+					disablePortal
 					open={open}
 					onClose={handleClose}
 					className="mt-3"

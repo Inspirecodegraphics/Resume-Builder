@@ -55,6 +55,13 @@ const Layout2 = () => {
 					<PersonalProjects></PersonalProjects>
 					<Honor></Honor>
 				</div>
+				<div className="col-12 bottom-line">
+					<div className="row">
+						<div className="col-12">
+							<hr />
+						</div>
+					</div>
+				</div>
 			</div>
 		</div>
 	);

@@ -5,7 +5,9 @@ import { formatDate } from "../../../../services/adminService";
 const Education = () => {
 	const { currentResume } = useAuth();
 	const getDate = (date) => {
-		const dateObj = formatDate(date, [{ month: "short" }, "year"]);
+		const currentDate = date.seconds ? date.toDate() : date;
+
+		const dateObj = formatDate(currentDate, [{ month: "short" }, "year"]);
 		return `${dateObj.month} ${dateObj.year}`;
 	};
 	const education = () => {
@@ -34,11 +36,11 @@ const Education = () => {
 							<div className="col-4 px-1">
 								<p className="m-0 education">
 									<i className="fas fa-calendar-alt pe-1"></i>
-									{getDate(education.startDate.toDate())} -
+									{getDate(education.startDate)} -
 									{education.present ? (
 										<b> Present</b>
 									) : (
-										getDate(education.endDate.toDate())
+										getDate(education.endDate)
 									)}
 								</p>
 							</div>
