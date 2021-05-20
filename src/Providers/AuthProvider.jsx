@@ -5,7 +5,7 @@ import {
 	generateResumeDocument,
 } from "../services/utils/auth";
 import { v4 as uuidv4 } from "uuid";
-
+import Loader from "../components/Loader";
 export const AuthContext = createContext({ user: null });
 
 export function useAuth() {
@@ -42,7 +42,7 @@ export function AuthProvider({ children }) {
 	};
 	return (
 		<AuthContext.Provider value={value}>
-			{loading && "Loading"}
+			{loading && <Loader></Loader>}
 			{!loading && children}
 		</AuthContext.Provider>
 	);
